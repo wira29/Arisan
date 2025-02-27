@@ -25,6 +25,7 @@
     <!-- Core Css -->
     <!-- --------------------------------------------------- -->
     <link  id="themeColors"  rel="stylesheet" href="{{ asset('assets') }}/css/style.min.css" />
+    @stack('css')
   </head>
   <body>
     <!-- Preloader -->
@@ -70,10 +71,8 @@
     <script src="{{ asset('assets') }}/js/sidebarmenu.js"></script>
     
     <script src="{{ asset('assets') }}/js/custom.js"></script>
-    <!-- ---------------------------------------------- -->
-    <!-- current page js files -->
-    <!-- ---------------------------------------------- -->
-    <script src="{{ asset('assets') }}/js/apps/chat.js"></script>
+
+    @stack('js')
   </body>
 
 <!-- Mirrored from demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/html/main/blog-posts.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 06 Jul 2023 01:59:25 GMT -->
