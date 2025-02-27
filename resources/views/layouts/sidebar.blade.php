@@ -13,6 +13,7 @@
       <!-- Sidebar navigation-->
       <nav class="sidebar-nav scroll-sidebar" data-simplebar>
         <ul id="sidebarnav">
+          @if (auth()->user()->roles->pluck('name')[0] == \App\Enums\RoleEnum::ADMIN->value)
           <!-- =================== -->
           <!-- Dashboard -->
           <!-- =================== -->
@@ -70,6 +71,19 @@
               <span class="hide-menu">Pembayaran</span>
             </a>
           </li>
+          @elseif (auth()->user()->roles->pluck('name')[0] === \App\Enums\RoleEnum::PESERTA->value)
+          <!-- =================== -->
+          <!-- Dashboard -->
+          <!-- =================== -->
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="{{ route('beranda') }}" aria-expanded="false">
+              <span>
+                <i class="ti ti-home"></i>
+              </span>
+              <span class="hide-menu">Beranda</span>
+            </a>
+          </li>
+          @endif
         </ul>
       </nav>
       <!-- End Sidebar navigation -->
