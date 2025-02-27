@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-       use HasFactory;
+  use HasFactory;
 
-    protected $guarded = ['id'];
-      protected $fillable = [
-        'nama_arisan',
-        'deskripsi',
-        'tanggal_mulai',
-        'tanggal_selesai',
-      ];
+  protected $guarded = ['id'];
+  protected $fillable = [
+    'nama_arisan',
+    'deskripsi',
+    'tanggal_mulai',
+    'tanggal_selesai',
+  ];
 }

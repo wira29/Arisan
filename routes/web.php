@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Peserta\BerandaController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Auth;
@@ -13,9 +14,16 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::prefix('admin')->group(function () {
-    Route::resources([
-        'produk' => ProdukController::class,
-        'setting' => SettingController::class,
-    ]);
+Route::middleware('auth')->group(function () {
+    // admin 
+    Route::prefix('admin')->group(function () {
+        Route::resources([
+            'produk' => ProdukController::class,
+            'setting' => SettingController::class,
+        ]);
+    });
+
+    // peserta
+    Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
+    Route::get('/join', [BerandaController::class, 'join'])->name('join');
 });
