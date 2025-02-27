@@ -106,7 +106,7 @@
                         return `<td>${formatCurrency(data)}</td>`
                     } },
                 { data: 'id', render: function(data, type, row) {
-                    return `<a href="#" class="btn btn-warning btn-sm mx-2">Edit</a><a href="#" class="btn btn-danger btn-sm btn-delete" data-id="${row.id}">Hapus</a>`;
+                    return `<a href="{{ route('produk.edit', ':id') }}" class="btn btn-warning btn-sm mx-2">Edit</a><a href="#" class="btn btn-danger btn-sm btn-delete" data-id="${row.id}">Hapus</a>`.replace(':id', row.id);
                 } },
             ],
         });

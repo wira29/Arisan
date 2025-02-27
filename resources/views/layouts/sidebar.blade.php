@@ -32,7 +32,7 @@
             <span class="hide-menu">Master Data</span>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="app-calendar.html" aria-expanded="false">
+            <a class="sidebar-link" href="{{ route('produk.index') }}" aria-expanded="false">
               <span>
                 <i class="ti ti-calendar"></i>
               </span>
@@ -40,7 +40,7 @@
             </a>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="app-chat.html" aria-expanded="false">
+            <a class="sidebar-link" href="{{ route('setting.index') }}" aria-expanded="false">
               <span>
                 <i class="ti ti-message-dots"></i>
               </span>

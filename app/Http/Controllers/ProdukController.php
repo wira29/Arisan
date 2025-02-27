@@ -62,15 +62,21 @@ class ProdukController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $produk = Produk::findOrFail($id);
+        return view('produk.edit', compact('produk'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProdukRequest $request, string $id)
     {
-        //
+           $validated = $request->validated();
+
+          $produk = Produk::findOrFail($id);
+          $produk->update($validated);
+
+          return redirect()->route('produk.index')->with('succes', 'Produk berhasil diperbarui');
     }
 
     /**
