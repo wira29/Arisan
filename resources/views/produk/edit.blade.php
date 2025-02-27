@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <x-banner title="Edit Arisan" description="Edit Arisan baru di situs web ini."></x-banner>
     <div class="card mt-3">
-        <form action="{{ route('produk.update', $produk->id) }}" method="POST">
+        <form action="{{ route('produk.update', $produk->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="card-body">
@@ -48,6 +48,24 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label class="mb-2" for="nama">Kategori</label>
+                            <select name="category_id" class="form-control">
+                                @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">
+                                    {{ $category->nama }}
+                                </option>
+                    
+                                @endforeach
+                            </select>
+                            @error('category')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
 
                     <div class="col-md-6">
                     <div class="form-group">

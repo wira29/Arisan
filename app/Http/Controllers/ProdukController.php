@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProdukRequest;
 use App\Models\Produk;
+use App\Models\Category;
 use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage as FacadesStorage;
@@ -29,7 +30,8 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        return view('produk.create');
+        $data = ["categories"=>Category::all()];
+        return view('produk.create', $data);
     }
 
     /**
@@ -60,23 +62,30 @@ class ProdukController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Produk $produk)
     {
-        $produk = Produk::findOrFail($id);
-        return view('produk.edit', compact('produk'));
+        $data = ["categories"=>Category::all(), 'produk' => $produk];
+        return view('produk.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProdukRequest $request, string $id)
+    public function update(ProdukRequest $request, Produk $produk)
     {
-           $validated = $request->validated();
+        $validated = $request->validated();
 
-          $produk = Produk::findOrFail($id);
-          $produk->update($validated);
+        if ($request->hasFile('gambar')) {
+            if (FacadesStorage::exists($produk->gambar)) {
+                FacadesStorage::delete($produk->gambar);
+            }
 
-          return redirect()->route('produk.index')->with('succes', 'Produk berhasil diperbarui');
+            $validated['gambar'] = $request->file('gambar')->store('produk');
+        }
+
+        $produk->update($validated);
+
+          return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui');
     }
 
     /**
