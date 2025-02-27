@@ -1,34 +1,76 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <x-banner title="Pengaturan" description="Daftar Arisan."
-        action="{{ route('setting.create') }}"></x-banner>
 
-        <div class="card mt-3">
+<div class="container-fluid">
+    <x-banner title="Edit Arisan" description="Edit Arisan baru di situs web ini."></x-banner>
+    <div class="card mt-3">
+        <form action="{{ route('setting.update', $setting->id) }}" method="POST">
+            @csrf
+            @method('PATCH')
             <div class="card-body">
-                <table id="example" class="table table-striped" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Nama Arisan</th>
-                            <th class="text-center">Deskripsi</th>
-                            <th class="text-center">Tanggal Mulai</th>
-                            <th class="text-center">Tanggal Selesai</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($setting as $settings)
-                        <tr>
-                            <td class="text-wrap">{{ $setting->nama_arisan }}</td>
-                            <td class="text-wrap">{{ $setting->deskripsi }}</td>
-                            <td class="text-wrap">{{ $setting->tanggal_mulai }}</td>
-                            <td class="text-wrap">{{ $setting->tanggal_selesai }}</td>
-                            
-                        @endforeach
-                    </tbody>
-                    
-                </table>
+                <div class="row mb-3">
+                    <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="mb-2" for="nama_arisan">Nama Arisan</label>
+                            <input type="text" class="form-control @error('nama_arisan') is-invalid @enderror"
+                                id="nama_arisan" name="nama_arisan"
+                                value="{{ $setting->nama_arisan }}">
+                            @error('nama_arisan')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="mb-2" for="deskripsi">Deskripsi</label>
+                            <input type="text" class="form-control @error('deskripsi') is-invalid @enderror"
+                                id="deskripsi" name="deskripsi" value="{{ $setting->deskripsi }}">
+                            @error('deskripsi')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="mb-2" for="tanggal_mulai">Tanggal Mulai</label>
+                            <input type="date" class="form-control @error('tanggal_mulai') is-invalid @enderror"
+                                id="tanggal_mulai" name="tanggal_mulai"
+                                value="{{ $setting->tanggal_mulai }}">
+                            @error('tanggal_mulai')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="mb-2" for="tanggal_selesai">Tanggal Selesai</label>
+                            <input type="date" class="form-control @error('tanggal_selesai') is-invalid @enderror"
+                                id="tanggal_selesai" name="tanggal_selesai"
+                                value="{{ $setting->tanggal_selesai }}">
+                            @error('tanggal_selesai')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
-        @endsection
+            <div class="card-footer text-end">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
