@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,5 +16,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('admin')->group(function () {
     Route::resources([
         'produk' => ProdukController::class,
+        'setting' => SettingController::class,
     ]);
 });
