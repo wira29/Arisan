@@ -38,6 +38,9 @@
         </div>
     </div>
   </div>
+
+  <!-- Delete Modal -->
+   <x-delete-modal-component action="" />
 @endsection
 
 @push('js')
@@ -51,6 +54,26 @@
             showToast('{{ session('error') }}', 'error');
         @endif
         
+
+        // delete modal 
+        $(document).on('click', '.btn-delete', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Hapus Produk',
+                text: "Apakah anda yakin ingin menghapus produk ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(document).find('#delete-modal').attr('action', '{{ route('produk.destroy', ':id') }}'.replace(':id', id)).submit();
+                }
+            })
+        });
 
         $('#example').DataTable({
             processing: true,
@@ -67,9 +90,9 @@
                     data: 'nama', 
                     render: function(data, type, row) {
                         return `<td class='text-center'>
-                                <img src="${row.gambar}" width="48" height="48"/>
+                                <img src="{{ asset('storage/'.':gambar') }}" width="48" height="48"/>
                                 ${data}
-                            </td>`
+                            </td>`.replace(':gambar', row.gambar)
                     } 
                 },
                 { data: 'harga_beli', 
@@ -83,7 +106,7 @@
                         return `<td>${formatCurrency(data)}</td>`
                     } },
                 { data: 'id', render: function(data, type, row) {
-                    return '<a href="#" class="btn btn-warning btn-sm mx-2">Edit</a><a href="#" class="btn btn-danger btn-sm">Hapus</a>';
+                    return `<a href="#" class="btn btn-warning btn-sm mx-2">Edit</a><a href="#" class="btn btn-danger btn-sm btn-delete" data-id="${row.id}">Hapus</a>`;
                 } },
             ],
         });

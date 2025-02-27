@@ -26,7 +26,7 @@ class ProdukRequest extends FormRequest
             'nama' => 'required|string|max:255',
             'harga_beli' => 'required|numeric',
             'harga_jual' => ['required', 'numeric', 'gt:harga_beli'],
-            'gambar' => 'mimes:jpeg,png,jpg,gif,svg|max:1024',
+            'gambar' => 'mimes:jpeg,png,jpg|max:1024',
         ];
     }
 
@@ -38,7 +38,7 @@ class ProdukRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Nama produk wajib diisi',
+            'nama.required' => 'Nama produk wajib diisi',
             'harga_beli.required' => 'Harga beli wajib diisi',
             'harga_jual.required' => 'Harga jual wajib diisi',
             'harga_beli.numeric' => 'Harga beli harus berupa angka',

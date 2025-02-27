@@ -80,6 +80,9 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
      <script src="{{ asset('assets') }}/js/toast-helper.js"></script>
 
+     <!-- Sweet alert  -->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @stack('js')
   </body>
 
