@@ -46,28 +46,30 @@
                 <div class="col-sm-8 col-md-6 col-xl-9">
                   <h2 class="mb-3 fs-7 fw-bolder">Meubel Aji</h2>
                   <p class=" mb-9">Silakan masuk dengan akun yang sudah terdaftar</p>
-                  <form>
+                  <form method="POST" action="{{ route('login') }}">
+                    @csrf
                     <div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Username</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <label for="exampleInputEmail1" class="form-label">Email</label>
+                      <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="johndoe@gmail.com">
+                      @error('email')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
                     </div>
                     <div class="mb-4">
                       <label for="exampleInputPassword1" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1">
+                      <input name="password" type="password" class="form-control @error('password') is-invalid @enderror" id="exampleInputPassword1" placeholder="password">
+                      @error('password')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
                     </div>
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                      <div class="form-check">
-                        <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label text-dark" for="flexCheckChecked">
-                          Remeber this Device
-                        </label>
-                      </div>
-                      <a class="text-primary fw-medium" href="authentication-forgot-password.html">Forgot Password ?</a>
-                    </div>
-                    <a href="index-2.html" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign In</a>
+                    <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Masuk</button>
                     <div class="d-flex align-items-center justify-content-center">
-                      <p class="fs-4 mb-0 fw-medium">New to Modernize?</p>
-                      <a class="text-primary fw-medium ms-2" href="authentication-register.html">Belum punya akun</a>
+                      <p class="fs-4 mb-0 fw-medium">Belum punya akun?</p>
+                      <a class="text-primary fw-medium ms-2" href="authentication-register.html">Daftar</a>
                     </div>
                   </form>
                 </div>
