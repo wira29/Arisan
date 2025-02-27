@@ -13,8 +13,11 @@ class SettingController extends Controller
      */
    public function index()
     {
+        // $validated = $request->validated();
+        // Settings::create($validated);
+        // return to_route('setting.index')->with('success', 'Berhasil menambahkan arisan.');
         $setting = Settings::first(); // Find the product by ID
-        return view('setting.index', compact('setting'));
+        return view('setting.index', compact('setting'))->with('succes', 'Berhasil mengubah arisan'); // Return to a view for editing the product
     }
 
     /**
@@ -64,6 +67,11 @@ class SettingController extends Controller
         'tanggal_mulai' => 'required|date',
         'tanggal_selesai' => 'required|date',
          ]);
+
+          $setting = Settings::first();
+          $setting->update($validated);
+
+          return redirect()->route('setting.index')->with('succes', 'Arisan berhasil diperbarui');
     }
 
     /**
