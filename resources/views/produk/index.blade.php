@@ -44,6 +44,14 @@
 <script src="{{ asset('assets') }}/js/currency.js"></script>
 <script>
     $(document).ready(function() {
+
+        @if (session()->has('success'))
+            showToast('{{ session('success') }}', 'success');
+        @elseif (session()->has('error'))
+            showToast('{{ session('error') }}', 'error');
+        @endif
+        
+
         $('#example').DataTable({
             processing: true,
             serverSide: true,

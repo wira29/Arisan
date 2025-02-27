@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProdukRequest;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -26,15 +27,24 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        //
+        return view('produk.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProdukRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        if ($request->hasFile('gambar')) {
+            $validated['gambar'] = $request->file('gambar')->store('produk');
+        } else {
+            $validated['gambar'] = null;
+        }
+
+        Produk::create($validated);
+        return to_route('produk.index')->with('success', 'Berhasil menambahkan produk.');
     }
 
     /**
