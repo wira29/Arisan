@@ -4,7 +4,7 @@
 <!-- Mirrored from demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/html/main/authentication-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 06 Jul 2023 02:01:04 GMT -->
 <head>
     <!--  Title -->
-    <title>Mordenize</title>
+    <title>Meubel Adjie - Login</title>
     <!--  Required Meta Tag -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -34,11 +34,11 @@
         <div class="position-relative z-index-5">
           <div class="row">
             <div class="col-xl-7 col-xxl-8">
-              <a href="index-2.html" class="text-nowrap logo-img d-block px-4 py-9 w-100">
-                <img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/logos/dark-logo.svg" width="180" alt="">
+              <a href="index-2.html" class="text-nowrap logo-img d-block px-4 py-9 w-50">
+                <img src="assets/images/logofix_transparent.png" width="180" alt="">
               </a>
               <div class="d-none d-xl-flex align-items-center justify-content-center" style="height: calc(100vh - 80px);">
-                <img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/backgrounds/login-security.svg" alt="" class="img-fluid" width="500">
+                <img src="assets/images/meja.gif" alt="" class="img-fluid" width="750">
               </div>
             </div>
             <div class="col-xl-5 col-xxl-4">
@@ -69,7 +69,7 @@
                     <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Masuk</button>
                     <div class="d-flex align-items-center justify-content-center">
                       <p class="fs-4 mb-0 fw-medium">Belum punya akun?</p>
-                      <a class="text-primary fw-medium ms-2" href="authentication-register.html">Daftar</a>
+                      <a class="text-primary fw-medium ms-2" href="register">Daftar</a>
                     </div>
                   </form>
                 </div>
