@@ -51,7 +51,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="mb-2" for="gambar">Gambar Produk</label>
-                            <input type="file" class="form-control @error('gambar') is-invalid @enderror" id="gambar" name="gambar" placeholder="Gambar Produk" value="{{ old('gambar') }}" data-dz-name="{{ old('nama') }}">
+                            <input accept="image/jpeg,png,jpg" type="file" class="form-control @error('gambar') is-invalid @enderror" id="gambar" name="gambar" placeholder="Gambar Produk" value="{{ old('gambar') }}" data-dz-name="{{ old('nama') }}">
 
                             @error('gambar')
                                 <span class="invalid-feedback" role="alert">

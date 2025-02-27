@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProdukRequest;
 use App\Models\Produk;
+use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage as FacadesStorage;
 use Yajra\DataTables\DataTables;
 
 class ProdukController extends Controller
@@ -74,8 +76,12 @@ class ProdukController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Produk $produk)
     {
-        //
+        if (FacadesStorage::exists($produk->gambar)) {
+            FacadesStorage::delete($produk->gambar);
+        }
+        $produk->delete();
+        return to_route('produk.index')->with('success', 'Produk berhasil dihapus.');
     }
 }
