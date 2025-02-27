@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PengaturanRequest;
 use App\Models\Settings;
 use Illuminate\Http\Request;
 
@@ -27,14 +28,12 @@ class SettingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PengaturanRequest $request)
     {
-        $validated = $request->validate([
-        'nama_arisan' => 'required|max:50',
-        'deskripsi' => 'required',
-        'tanggal_mulai' => 'required|date',
-        'tanggal_selesai' => 'required|date',
-    ]);
+        $validated = $request->validated();
+
+        Settings::create($validated);
+        return to_route('setting.index')->with('success', 'Berhasil menambahkan arisan.');
     }
 
     /**
@@ -50,7 +49,7 @@ class SettingController extends Controller
      */
     public function edit(string $id)
     {
-        $setting = Settings::findOrFail($id); // Find the product by ID
+        $setting = Settings::first(); // Find the product by ID
         return view('setting.edit', compact('setting')); // Return to a view for editing the product
     }
 
