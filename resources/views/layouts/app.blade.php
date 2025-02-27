@@ -25,6 +25,10 @@
     <!-- Core Css -->
     <!-- --------------------------------------------------- -->
     <link  id="themeColors"  rel="stylesheet" href="{{ asset('assets') }}/css/style.min.css" />
+
+    <!-- Toast  -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
     @stack('css')
   </head>
   <body>
@@ -71,6 +75,10 @@
     <script src="{{ asset('assets') }}/js/sidebarmenu.js"></script>
     
     <script src="{{ asset('assets') }}/js/custom.js"></script>
+
+    <!-- Toast  -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+     <script src="{{ asset('assets') }}/js/toast-helper.js"></script>
 
     @stack('js')
   </body>
