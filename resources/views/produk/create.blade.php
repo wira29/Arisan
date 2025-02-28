@@ -26,6 +26,7 @@
                             @enderror
                         </div>
                     </div>
+                    
                     <div class="col-md-6 mb-3">
                         <div class="form-group">
                             <label class="mb-2" for="harga_beli">Harga Beli</label>
@@ -48,7 +49,27 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-12">
+
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label class="mb-2" for="nama">Kategori</label>
+                            <select name="category_id" class="form-control">
+                                @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">
+                                    {{ $category->nama }}
+                                </option>
+                                    
+                                @endforeach
+                            </select>
+                            @error('category')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="mb-2" for="gambar">Gambar Produk</label>
                             <input accept="image/jpeg,png,jpg" type="file" class="form-control @error('gambar') is-invalid @enderror" id="gambar" name="gambar" placeholder="Gambar Produk" value="{{ old('gambar') }}" data-dz-name="{{ old('nama') }}">

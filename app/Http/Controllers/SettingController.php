@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PengaturanRequest;
-use App\Models\Settings;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -16,7 +16,7 @@ class SettingController extends Controller
         // $validated = $request->validated();
         // Settings::create($validated);
         // return to_route('setting.index')->with('success', 'Berhasil menambahkan arisan.');
-        $setting = Settings::first(); // Find the product by ID
+        $setting = Setting::first(); // Find the product by ID
         return view('setting.index', compact('setting'))->with('succes', 'Berhasil mengubah arisan'); // Return to a view for editing the product
     }
 
@@ -35,7 +35,7 @@ class SettingController extends Controller
     {
         $validated = $request->validated();
 
-        Settings::create($validated);
+        Setting::create($validated);
         return to_route('setting.index')->with('success', 'Berhasil menambahkan arisan.');
     }
 
@@ -52,23 +52,18 @@ class SettingController extends Controller
      */
     public function edit(string $id)
     {
-        $setting = Settings::first(); // Find the product by ID
+        $setting = Setting::first(); // Find the product by ID
         return view('setting.edit', compact('setting')); // Return to a view for editing the product
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PengaturanRequest $request, string $id)
     {
-         $validated = $request->validate([
-        'nama_arisan'=> 'required|max:50',
-        'deskripsi'=> 'required',
-        'tanggal_mulai' => 'required|date',
-        'tanggal_selesai' => 'required|date',
-         ]);
+         $validated = $request->validated();
 
-          $setting = Settings::first();
+          $setting = Setting::first();
           $setting->update($validated);
 
           return redirect()->route('setting.index')->with('succes', 'Arisan berhasil diperbarui');
