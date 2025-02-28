@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Peserta;
 
+use App\Helpers\CurrencyFormat;
 use App\Http\Controllers\Controller;
 use App\Models\ArisanUser;
 use App\Models\Category;
