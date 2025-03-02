@@ -26,7 +26,7 @@ class PengaturanRequest extends FormRequest
             'nama_arisan' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tanggal_mulai' => 'required|date',
-               'tanggal_selesai' => 'required|date',
+            'tanggal_selesai' => 'required|date',
             
         ];
     }

@@ -48,6 +48,15 @@
               <span class="hide-menu">Pengaturan</span>
             </a>
           </li>
+
+          <li class="sidebar-item">
+              <a class="sidebar-link" href="{{ route('category.index') }}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-message-dots"></i>
+                </span>
+                <span class="hide-menu">Kategori</span>
+              </a>
+            </li>
           <!-- ============================= -->
           <!-- Arisan -->
           <!-- ============================= -->
