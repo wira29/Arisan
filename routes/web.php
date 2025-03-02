@@ -26,4 +26,5 @@ Route::middleware('auth')->group(function () {
     // peserta
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
     Route::get('/join', [BerandaController::class, 'join'])->name('join');
+    Route::post('/joinAction', [BerandaController::class, 'joinAction'])->name('joinAction');
 });
