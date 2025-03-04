@@ -54,6 +54,8 @@
 
 @push('js')
 <script src="{{ asset('assets') }}/js/currency.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.0/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.0/dist/sweetalert2.min.js"></script>
 <script>
     $(document).ready(function() {
 
@@ -142,7 +144,7 @@
                 // Tombol Detail dan Approved
                 return `
                 <a href="${url}" class="btn btn-warning btn-sm mx-2">Detail</a>
-                <a href="${whatsappUrl}" class="btn btn-success btn-sm mx-2" onclick="approve(${row.id})">Approved</a>
+                <a href="${whatsappUrl}" class="btn btn-success btn-sm mx-2" onclick="approve(${row.id})">Approve</a>
                 `;
                 }
                 }
@@ -151,31 +153,53 @@
     });
 
         function approve(id) {
-            // Konfirmasi apakah user yakin untuk menyetujui
-            if (confirm('Apakah Anda yakin ingin menyetujui peserta ini?')) {
-                // Lakukan AJAX request untuk mengubah status is_approved menjadi 1
-                $.ajax({
-                url: `/admin/approvedpeserta/${id}/approve`, // Sesuaikan dengan route yang benar
-                method: 'POST',
-                data: {
-                _token: '{{ csrf_token() }}', // Kirimkan CSRF token
-                id: id
-                },
-                success: function(response) {
-                // Jika berhasil, ubah status tampilan menjadi 'Approved'
-                if (response.success) {
-                alert('Peserta telah disetujui!');
-                // Update tampilan tombol atau status
-                location.reload(); // Refresh halaman agar status terbaru terlihat
-                } else {
-                alert(response.message); // Tampilkan pesan error dari server
-                }
-                },
-                error: function() {
-                alert('Terjadi kesalahan.');
-                }
-                });
-            }
+        // Konfirmasi apakah user yakin untuk menyetujui dengan SweetAlert2
+        Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Anda akan menyetujui peserta ini.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Setujui',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+        }).then((result) => {
+        if (result.isConfirmed) {
+        // Lakukan AJAX request untuk mengubah status is_approved menjadi 1
+        $.ajax({
+        url: `/admin/approvedpeserta/${id}/approve`, // Sesuaikan dengan route yang benar
+        method: 'POST',
+        data: {
+        _token: '{{ csrf_token() }}', // Kirimkan CSRF token
+        id: id
+        },
+        success: function(response) {
+        // Jika berhasil, tampilkan SweetAlert sukses
+        if (response.success) {
+        Swal.fire(
+        'Peserta Disetujui!',
+        'Peserta telah berhasil disetujui.',
+        'success'
+        );
+        // Update tampilan tombol atau status
+        location.reload(); // Refresh halaman agar status terbaru terlihat
+        } else {
+        Swal.fire(
+        'Gagal!',
+        response.message,
+        'error'
+        );
+        }
+        },
+        error: function() {
+        Swal.fire(
+        'Terjadi Kesalahan!',
+        'Ada kesalahan dalam memproses permintaan Anda.',
+        'error'
+        );
+        }
+        });
+        }
+        });
         }
 </script>
 @endpush

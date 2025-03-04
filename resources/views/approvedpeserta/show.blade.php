@@ -3,10 +3,8 @@
 @section('content')
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header">
-            <h5 class="card-title">{{ $data->user->name ?? '-' }}</h5>
-        </div>
         <div class="card-body">
+            <h5 class="card-text">{{ $data->user->name ?? '-' }}</h5>
             <p class="card-text">Status: </p>
             <!-- Anda bisa menambahkan lebih banyak konten di sini -->
         </div>
