@@ -2,7 +2,15 @@
 
 @section('content')
 <div class="container-fluid">
-    <x-banner title="{{ $data->user->name ?? '-' }}" description="Mengikuti arisan dengan jenis .... dengan detail sebagai berikut "> <th class="text-center"></th></x-banner>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">{{ $data->user->name ?? '-' }}</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text">Status: </p>
+            <!-- Anda bisa menambahkan lebih banyak konten di sini -->
+        </div>
+    </div>
     <div class="card mt-3">
         <div class="card-body">
 
