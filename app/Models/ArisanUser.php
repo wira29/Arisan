@@ -13,4 +13,19 @@ class ArisanUser extends Model
     {
         return $this->hasMany(ArisanUserProduk::class);
     }
+
+       public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id', 'name');
+    }
+
+    public function arisanUserProduks()
+{
+    return $this->hasMany(ArisanUserProduk::class, 'arisan_user_id', 'id');
+}
+
+ public function produk()
+    {
+        return $this->belongsTo(Produk::class, 'produks_id', 'id', 'nama');
+    }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Peserta\BerandaController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ApprovedPesertaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,9 @@ Route::middleware('auth')->group(function () {
             'produk' => ProdukController::class,
             'setting' => SettingController::class,
             'category' => CategoryController::class,
+            'approvedpeserta' => ApprovedPesertaController::class,
         ]);
+
     });
 
     // peserta
