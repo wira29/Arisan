@@ -16,14 +16,13 @@
     /* Mengurangi jarak antara banner dan card */
 }
 
-.container-fluid {
+/* .container-fluid {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    /* Pastikan elemen-elemen card dimulai dari atas */
     flex-wrap: wrap;
     padding: 2em;
-}
+} */
 
 .data-card {
     display: flex;

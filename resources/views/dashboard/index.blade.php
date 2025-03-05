@@ -6,12 +6,14 @@
 
 @section('content')
 
-<x-banner title="Dashboard" description="Linimasa Meubel Adji."></x-banner>
 
 <div class="container-fluid">
+    
+    <x-banner title="Dashboard" description="Linimasa Meubel Adji."></x-banner>
 
-
-    <!-- Kartu pertama -->
+    <div class="row justify-content-center">
+        <div class="col-md-6 justify-content-center align-items-center"">
+            <!-- Kartu pertama -->
     <a href="{{ route('produk.index') }}" class="data-card">
         <h3>{{ $produk->count() }}</h3>
         <h4>Total Produk</h4>
@@ -26,7 +28,11 @@
         </span>
     </a>
 
-    <!-- Kartu kedua -->
+    
+        </div>
+
+        <div class="col-md-6 align-items-center">
+            <!-- Kartu kedua -->
     <a href="{{ route('approvedpeserta.index') }}" class="data-card">
         <h3>{{ $arisanUser->count() }}</h3>
         <h4>Total Peserta</h4>
@@ -40,6 +46,8 @@
             </svg>
         </span>
     </a>
+        </div>
+    </div>
 </div>
 
 @endsection
