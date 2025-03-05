@@ -35,8 +35,8 @@
               <h6>Pembayaran</h6>
             </div>
             <div class="mb-3">
-                <input type="radio" class="btn-check" name="jumlahBayar" value="40" id="option1" autocomplete="off" checked="">
-                <label class="btn btn-outline-primary rounded-pill font-medium me-2 mb-2" for="option1">40x</label>
+                <input type="radio" class="btn-check" name="jumlahBayar" value="45" id="option1" autocomplete="off" checked="">
+                <label class="btn btn-outline-primary rounded-pill font-medium me-2 mb-2" for="option1">45x</label>
 
                 <input type="radio" class="btn-check" name="jumlahBayar" value="50" id="option2" autocomplete="off">
                 <label class="btn btn-outline-primary rounded-pill font-medium me-2 mb-2" for="option2">50x</label>
@@ -81,7 +81,7 @@
     let items = [];
     let orders = '';
     let totalPrice = 0;
-    let jumlahBayar = 40;
+    let jumlahBayar = 45;
     let perMinggu = 0;
 
     // join arisan 
@@ -111,7 +111,7 @@
         method: 'POST',
         data: {
           produks: items,
-          jumlahBayar: jumlahBayar == 40 ? 0 : 1,
+          jumlahBayar: jumlahBayar,
           perMinggu: perMinggu,
           totalBayar: totalPrice,
           _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')

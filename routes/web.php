@@ -4,6 +4,7 @@ use App\Http\Controllers\Peserta\BerandaController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PembayaranController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,7 @@ Route::middleware('auth')->group(function () {
             'setting' => SettingController::class,
             'category' => CategoryController::class,
         ]);
+        Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran');
     });
 
     // peserta
