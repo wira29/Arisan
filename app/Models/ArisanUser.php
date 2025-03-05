@@ -30,4 +30,14 @@ class ArisanUser extends Model
     {
         return $query->where('is_approved', true);
     }
+
+    public function arisanUserProduks()
+    {
+        return $this->hasMany(ArisanUserProduk::class, 'arisan_user_id', 'id');
+    }
+
+    public function produk()
+    {
+        return $this->belongsTo(Produk::class, 'produks_id', 'id', 'nama');
+    }
 }

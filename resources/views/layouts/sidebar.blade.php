@@ -18,7 +18,7 @@
           <!-- Dashboard -->
           <!-- =================== -->
           <li class="sidebar-item">
-            <a class="sidebar-link" href="index-2.html" aria-expanded="false">
+            <a class="sidebar-link" href="{{ route('beranda') }}" aria-expanded="false">
               <span>
                 <i class="ti ti-aperture"></i>
               </span>
@@ -55,6 +55,15 @@
                   <i class="ti ti-message-dots"></i>
                 </span>
                 <span class="hide-menu">Kategori</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{{ route('approvedpeserta.index') }}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-message-dots"></i>
+                </span>
+                <span class="hide-menu">Approved Peserta</span>
               </a>
             </li>
           <!-- ============================= -->

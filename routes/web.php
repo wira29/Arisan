@@ -5,11 +5,12 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\ApprovedPesertaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -23,8 +24,11 @@ Route::middleware('auth')->group(function () {
             'produk' => ProdukController::class,
             'setting' => SettingController::class,
             'category' => CategoryController::class,
+            'approvedpeserta' => ApprovedPesertaController::class,
         ]);
         Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran');
+
+        Route::post('/admin/approvedpeserta/{id}/approve', [ApprovedPesertaController::class, 'approve'])->name('approvedpeserta.approve');
     });
 
     // peserta

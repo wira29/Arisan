@@ -90,7 +90,10 @@
                         </div>
                       </div>
                     </div>
-                    <a href="authentication-login.html" class="btn btn-outline-primary">Log Out</a>
+                    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                      @csrf
+                      <button type="submit" class="btn btn-outline-primary">Log Out</button>
+                    </form>
                   </div>
                 </div>
               </div>

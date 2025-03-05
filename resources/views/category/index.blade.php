@@ -9,7 +9,7 @@
 @endpush
 @section('content')
 <div class="container-fluid">
-    <x-banner title="Category" description="Daftar Kategori yang ada di situs web ini."
+    <x-banner title="Kategori" description="Daftar Kategori yang ada di situs web ini."
         action="{{ route('category.create') }}"></x-banner>
     <div class="card mt-3">
         <div class="card-body">
@@ -25,7 +25,7 @@
                 <tfoot>
                     @foreach ($categories as $category)
                         <tr>
-                            <th class="text-center">{{ $category->id }}</th>
+                            <th class="text-center">{{ $loop->iteration }}</th>
                             <th class="text-center">{{ $category->nama }}</th>
                             <th class="text-center">
                                 <a class="btn btn-primary" href="{{ route('category.edit', $category->id) }}">Edit</a>
