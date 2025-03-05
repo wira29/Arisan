@@ -21,6 +21,11 @@ class ArisanUser extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function pembayaran(): HasMany
+    {
+        return $this->hasMany(Pembayaran::class);
+    }
+
     public function scopeUnfinished($query)
     {
         return $query->where('is_finished', false);
