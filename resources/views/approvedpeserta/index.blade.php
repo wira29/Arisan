@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <x-banner title="Persetujuan Peserta" description="Daftar produk yang ada di situs web ini."></x-banner>
+    <x-banner title="Peserta" description="Daftar produk yang ada di situs web ini."></x-banner>
     <div class="card mt-3">
         <div class="card-body">
             <table id="example" class="table" style="width:100%">

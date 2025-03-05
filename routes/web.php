@@ -6,6 +6,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\ApprovedPesertaController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
             'setting' => SettingController::class,
             'category' => CategoryController::class,
             'approvedpeserta' => ApprovedPesertaController::class,
+            'dashboard' => DashboardController::class,
         ]);
         Route::get('/pembayaran', [PembayaranController::class, 'index'])->name('pembayaran');
 
