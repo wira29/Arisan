@@ -16,7 +16,7 @@ class BerandaController extends Controller
     public function index()
     {
         $data = [
-            'checkCurrentArisan' => ArisanUser::where('is_finished', false)->count(),
+            'checkCurrentArisan' => ArisanUser::where(['is_finished' => false, 'user_id' => auth()->id()])->count(),
         ];
         return view('peserta.beranda.index', $data);
     }

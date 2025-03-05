@@ -14,18 +14,17 @@
     <x-banner title="Persetujuan Peserta" description="Daftar produk yang ada di situs web ini."></x-banner>
     <div class="card mt-3">
         <div class="card-body">
-            <table id="example" class="table table-striped" style="width:100%">
+            <table id="example" class="table" style="width:100%">
                 <thead>
                     <tr>
                         <th class="text-center">No</th>
                         <th class="text-center">Nama</th>
-                        <th class="text-center">Mebel</th>
                         <th class="text-center">Approved</th>
-                        <th class="text-center">Selesai</th>
                         <th class="text-center">Tabungan</th>
                         <th class="text-center">Total harga</th>
                         <th class="text-center">Jumlah bayar</th>
                         <th class="text-center">Per minggu</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -33,10 +32,8 @@
                     <tr>
                         <th class="text-center">No</th>
                         <th class="text-center">Nama</th>
-                        <th class="text-center">Mebel</th>
                         <th class="text-center">Approved</th>
                         <th class="text-center">Selesai</th>
-                        <th class="text-center">Tabungan</th>
                         <th class="text-center">Total harga</th>
                         <th class="text-center">Jumlah bayar</th>
                         <th class="text-center">Per minggu</th>
@@ -83,21 +80,10 @@
                 }
                 },
                 {
-                data: 'is_mabel',
-                render: function(data, type, row) {
-                return `<td>${(data)}</td>`
-                }
-                },
-                {
                 data: 'is_approved',
                 render: function(data, type, row) {
-                return `<td>${(data)}</td>`
-                }
-                },
-                {
-                data: 'is_finished',
-                render: function(data, type, row) {
-                return `<td>${(data)}</td>`
+                    console.log(data)
+                return `<td><span class="badge ${data == 1 ? "bg-light-success text-success" : "bg-light-warning text-warning"}">${(data == 1 ? 'Disetujui' : 'Pending')}</span></td>`
                 }
                 },
                 {
@@ -114,8 +100,9 @@
                 },
                 {
                 data: 'jumlah_bayar',
+                class: "text-center",
                 render: function(data, type, row) {
-                return `<td>${formatCurrency(data)}</td>`
+                return `<td>${data}x</td>`
                 }
                 },
                 {
@@ -138,10 +125,14 @@
                 let url = `{{ route('approvedpeserta.show', 0) }}`.replace('/0', '/' + row.id);
                 
                 // Tombol Detail dan Approved tanpa WhatsApp
+                if (row.is_approved == 1) {
+                    return `
+                    <a href="${url}" class="btn btn-warning btn-sm mx-2">Detail</a>`
+                }
+
                 return `
                 <a href="${url}" class="btn btn-warning btn-sm mx-2">Detail</a>
-                <a href="javascript:void(0);" class="btn btn-success btn-sm mx-2" id="approve-btn-${row.id}"
-                    onclick="approve(${row.id})">Approve</a>
+                <a href="javascript:void(0);" class="btn btn-success btn-sm mx-2 btn-approve" data-data='${JSON.stringify(row)}'>Approve</a>
                 `;
                 }
                 }
@@ -149,8 +140,10 @@
         });
     });
 
-       function approve(id) {
-    // Konfirmasi apakah user yakin untuk menyetujui dengan SweetAlert2
+    $(document).on('click', '.btn-approve',function() {
+    const arisanUser = $(this).data('data');
+    console.log(arisanUser)
+        // Konfirmasi apakah user yakin untuk menyetujui dengan SweetAlert2
     Swal.fire({
     title: 'Apakah Anda yakin?',
     text: "Anda akan menyetujui peserta ini.",
@@ -163,40 +156,33 @@
     if (result.isConfirmed) {
     // Lakukan AJAX request untuk mengubah status is_approved menjadi 1
     $.ajax({
-    url: `/admin/approvedpeserta/${id}/approve`, // Pastikan rutenya sesuai
+    url: `{{ route('approve-peserta', ':id') }}`.replace(':id', arisanUser.id), // Pastikan rutenya sesuai
     method: 'POST',
     data: {
     _token: '{{ csrf_token() }}', // Kirimkan CSRF token
-    id: id
+    id: arisanUser.id
     },
     success: function(response) {
     // Jika berhasil, tampilkan SweetAlert sukses
     if (response.success) {
-    Swal.fire(
-    'Peserta Disetujui!',
-    'Peserta telah berhasil disetujui.',
-    'success'
-    );
-    // Update status tombol atau elemen yang relevan
-    $(`#approve-btn-${id}`).text('Approved').prop('disabled', true); // Update tombol Approve menjadi Approved
+        showToast(response.message, 'success');
+
+        const message = "anda telah disetujui bergabung arisan, anda sudah bisa login dengan akun anda";
+        const waUrl = `https://wa.me/+${arisanUser.user.phone_number}?text=${message}`;
+
+        window.open(waUrl, "_blank"); // Membuka WhatsApp dalam tab baru
+
+        window.location.reload()
     } else {
-    Swal.fire(
-    'Gagal!',
-    response.message,
-    'error'
-    );
+        showToast(response.message, 'error');
     }
     },
     error: function() {
-    Swal.fire(
-    'Terjadi Kesalahan!',
-    'Ada kesalahan dalam memproses permintaan Anda.',
-    'error'
-    );
+        showToast(response.message, 'error');
     }
     });
     }
     });
-    }
+    })
 </script>
 @endpush
