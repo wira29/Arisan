@@ -137,14 +137,11 @@
                 // URL untuk halaman detail
                 let url = `{{ route('approvedpeserta.show', 0) }}`.replace('/0', '/' + row.id);
                 
-                // URL WhatsApp untuk mengirim pesan (pastikan nomor yang ada benar)
-                let phoneNumber = row.phone_number; // Misalkan phone_number ada dalam data row
-                let whatsappUrl = `https://wa.me/${phoneNumber}?text=Hello,%20I%20approve%20this%20person%20for%20the%20arisan.`;
-                
-                // Tombol Detail dan Approved
+                // Tombol Detail dan Approved tanpa WhatsApp
                 return `
                 <a href="${url}" class="btn btn-warning btn-sm mx-2">Detail</a>
-                <a href="${whatsappUrl}" class="btn btn-success btn-sm mx-2" onclick="approve(${row.id})">Approve</a>
+                <a href="javascript:void(0);" class="btn btn-success btn-sm mx-2" id="approve-btn-${row.id}"
+                    onclick="approve(${row.id})">Approve</a>
                 `;
                 }
                 }
@@ -152,54 +149,54 @@
         });
     });
 
-        function approve(id) {
-        // Konfirmasi apakah user yakin untuk menyetujui dengan SweetAlert2
-        Swal.fire({
-        title: 'Apakah Anda yakin?',
-        text: "Anda akan menyetujui peserta ini.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Setujui',
-        cancelButtonText: 'Batal',
-        reverseButtons: true
-        }).then((result) => {
-        if (result.isConfirmed) {
-        // Lakukan AJAX request untuk mengubah status is_approved menjadi 1
-        $.ajax({
-        url: `/admin/approvedpeserta/${id}/approve`, // Sesuaikan dengan route yang benar
-        method: 'POST',
-        data: {
-        _token: '{{ csrf_token() }}', // Kirimkan CSRF token
-        id: id
-        },
-        success: function(response) {
-        // Jika berhasil, tampilkan SweetAlert sukses
-        if (response.success) {
-        Swal.fire(
-        'Peserta Disetujui!',
-        'Peserta telah berhasil disetujui.',
-        'success'
-        );
-        // Update tampilan tombol atau status
-        location.reload(); // Refresh halaman agar status terbaru terlihat
-        } else {
-        Swal.fire(
-        'Gagal!',
-        response.message,
-        'error'
-        );
-        }
-        },
-        error: function() {
-        Swal.fire(
-        'Terjadi Kesalahan!',
-        'Ada kesalahan dalam memproses permintaan Anda.',
-        'error'
-        );
-        }
-        });
-        }
-        });
-        }
+       function approve(id) {
+    // Konfirmasi apakah user yakin untuk menyetujui dengan SweetAlert2
+    Swal.fire({
+    title: 'Apakah Anda yakin?',
+    text: "Anda akan menyetujui peserta ini.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Setujui',
+    cancelButtonText: 'Batal',
+    reverseButtons: true
+    }).then((result) => {
+    if (result.isConfirmed) {
+    // Lakukan AJAX request untuk mengubah status is_approved menjadi 1
+    $.ajax({
+    url: `/admin/approvedpeserta/${id}/approve`, // Pastikan rutenya sesuai
+    method: 'POST',
+    data: {
+    _token: '{{ csrf_token() }}', // Kirimkan CSRF token
+    id: id
+    },
+    success: function(response) {
+    // Jika berhasil, tampilkan SweetAlert sukses
+    if (response.success) {
+    Swal.fire(
+    'Peserta Disetujui!',
+    'Peserta telah berhasil disetujui.',
+    'success'
+    );
+    // Update status tombol atau elemen yang relevan
+    $(`#approve-btn-${id}`).text('Approved').prop('disabled', true); // Update tombol Approve menjadi Approved
+    } else {
+    Swal.fire(
+    'Gagal!',
+    response.message,
+    'error'
+    );
+    }
+    },
+    error: function() {
+    Swal.fire(
+    'Terjadi Kesalahan!',
+    'Ada kesalahan dalam memproses permintaan Anda.',
+    'error'
+    );
+    }
+    });
+    }
+    });
+    }
 </script>
 @endpush

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -25,6 +25,9 @@ Route::middleware('auth')->group(function () {
             'category' => CategoryController::class,
             'approvedpeserta' => ApprovedPesertaController::class,
         ]);
+
+        Route::post('/admin/approvedpeserta/{id}/approve', [ApprovedPesertaController::class, 'approve'])->name('approvedpeserta.approve');
+
 
     });
 

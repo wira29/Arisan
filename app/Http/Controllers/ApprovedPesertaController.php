@@ -101,7 +101,7 @@ class ApprovedPesertaController extends Controller
    public function approve(Request $request, $id)
 {
     // Temukan peserta berdasarkan ID yang diberikan di request
-    $data = ArisanUser::with('user')->find($id);
+    $data = ArisanUser::find($id);
 
     // Periksa jika peserta tidak ditemukan
     if (!$data) {
@@ -120,6 +120,7 @@ class ApprovedPesertaController extends Controller
     // Kirimkan response berhasil
     return response()->json(['success' => true, 'message' => 'Peserta berhasil disetujui.']);
 }
+
 
 
 
