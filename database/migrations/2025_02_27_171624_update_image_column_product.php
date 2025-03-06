@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('Produks', function (Blueprint $table) {
+        Schema::table('produks', function (Blueprint $table) {
             $table->string('gambar')->after('harga_jual')->nullable()->change();
         });
     }
