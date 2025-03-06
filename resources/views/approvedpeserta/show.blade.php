@@ -24,21 +24,21 @@
                         <th class="text-center">Total Harga</th>
                     </tr>
                 </thead>
-                <tbody>@foreach ($data->arisanUserProduks as $produk)</tbody>
-                <tfoot>
+                <tbody>
+                    @foreach ($data->arisanUserProduks as $produk)
                     <tr>
-                        <th class="text-center">{{ $loop->iteration }}</th>
-                        <th class="text-center">
-                            <img src="{{ asset('images/produk/' . $produk->produk->gambar) }}" alt="{{ $produk->produk->nama }}" width="100">
-                        </th>
-                        <th class="text-center">{{ $produk->produk->nama }}</th>
-                       
-                        <th class="text-center">{{ $produk->qty }}</th>
-                        <th class="text-center">{{ $produk->price }}</th>
-                        <th class="text-center">{{ $produk->total_price }}</th>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td class="text-center">
+                            <img src="{{ asset('images/produk/' . $produk->produk->gambar) }}" alt="{{ $produk->produk->nama }}"
+                                width="100">
+                        </td>
+                        <td class="text-center">{{ $produk->produk->nama }}</td>
+                        <td class="text-center">{{ $produk->qty }}</td>
+                        <td class="text-center">{{ $produk->price }}</td>
+                        <td class="text-center">{{ $produk->total_price }}</td>
                     </tr>
                     @endforeach
-                </tfoot>
+                </tbody>
             </table>
         <div class="card-footer text-end">
             <a href="{{ route('approvedpeserta.index') }}" class="btn btn-dark">Kembali</a>

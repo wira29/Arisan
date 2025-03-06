@@ -73,7 +73,7 @@
             </a>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="app-notes.html" aria-expanded="false">
+            <a class="sidebar-link" href="{{ route('pembayaran') }}" aria-expanded="false">
               <span>
                 <i class="ti ti-notes"></i>
               </span>
