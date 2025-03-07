@@ -31,16 +31,6 @@
         </div>
         <div class="col-md-5">
           <div class="table-responsive rounded-2 mb-4">
-            <div>
-              <h6>Pembayaran</h6>
-            </div>
-            <div class="mb-3">
-                <input type="radio" class="btn-check" name="jumlahBayar" value="45" id="option1" autocomplete="off" checked="">
-                <label class="btn btn-outline-primary rounded-pill font-medium me-2 mb-2" for="option1">45x</label>
-
-                <input type="radio" class="btn-check" name="jumlahBayar" value="50" id="option2" autocomplete="off">
-                <label class="btn btn-outline-primary rounded-pill font-medium me-2 mb-2" for="option2">50x</label>
-            </div>
             <table class="table border text-nowrap customize-table mb-0 align-middle">
               <thead class="text-dark fs-4">
                 <tr>
@@ -58,6 +48,10 @@
                 <tr>
                   <td colspan="2" class="text-bold"><strong>Total</strong></td>
                   <td colspan="2"><strong class="text-primary" id="totalPrice"></strong></td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-bold"><strong>Jumlah bayar</strong></td>
+                  <td colspan="2"><strong class="text-primary" id="jumlahBayar"></strong></td>
                 </tr>
                 <tr>
                   <td colspan="2" class="text-bold"><strong>Pembayaran/minggu</strong></td>
@@ -83,6 +77,9 @@
     let totalPrice = 0;
     let jumlahBayar = 45;
     let perMinggu = 0;
+
+    // init 
+    setJumlahBayar();
 
     // join arisan 
     $('#btn-join').on('click', function() {
@@ -136,10 +133,9 @@
       $('#perMinggu').html(formatCurrency(perMinggu))
     }
 
-    $('input[name="jumlahBayar"]').on('change', function() {
-      jumlahBayar = parseInt($(this).val());
-      setPerMinggu();
-    });
+    function setJumlahBayar() {
+      $('#jumlahBayar').html(jumlahBayar + "x")
+    }
 
     $(document).on('click', '.item', function () {
       var produk = $(this).data('produk');
@@ -159,11 +155,17 @@
         let totalHtml = $(document).find('#row-' + item.id).find('td:nth-child(3)');
         totalHtml.html(formatCurrency(item.total));
       } else {
+
+        if (produk.is_meubel == 1) {
+          jumlahBayar = 50;
+          setJumlahBayar();
+       }
         item = {
           id: produk.id,
           produk: produk,
           qty: 1,
           total: produk.harga_jual,
+          is_meubel: produk.is_meubel,
         };
         items.push(item);
 
@@ -249,6 +251,14 @@
     });
 
     function removeItem(itemId) {
+
+      // set jumlah bayar 
+      const item = items.find(item => item.id == itemId);
+      if (item.is_meubel == 1) {
+        jumlahBayar = 45;
+        setJumlahBayar();
+      }
+
       totalPrice -= items.find(item => item.id == itemId).total;
       setTotalPrice()
       setPerMinggu()
