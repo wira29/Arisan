@@ -13,25 +13,25 @@ class ApprovedPesertaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    if ($request->ajax()) {
-        $data = ArisanUser::with('user'); // Pastikan user dimuat
+    {
+        if ($request->ajax()) {
+            $data = ArisanUser::with('user', 'arisanUserProduks.produk'); // Pastikan user dimuat
 
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('user_name', function ($row) { 
-                return optional($row->user)->name ?? '-'; // Menghindari error jika user null
-            })
-            ->addColumn('action', function ($row) {
-                $url = route('approvedpeserta.show', $row->id);
-                return '<a href="'.$url.'" class="btn btn-warning btn-sm mx-2">Detail</a>';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('user_name', function ($row) {
+                    return optional($row->user)->name ?? '-'; // Menghindari error jika user null
+                })
+                ->addColumn('action', function ($row) {
+                    $url = route('approvedpeserta.show', $row->id);
+                    return '<a href="' . $url . '" class="btn btn-warning btn-sm mx-2">Detail</a>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('approvedpeserta.index');
     }
-
-    return view('approvedpeserta.index');
-}
 
 
     /**
@@ -54,22 +54,22 @@ class ApprovedPesertaController extends Controller
      * Display the specified resource.
      */
     public function show($id)
-{
-    $data = ArisanUser::with(['user', 'arisanUserProduks.produk'])->findOrFail($id); // Ambil data peserta beserta produk
+    {
+        $data = ArisanUser::with(['user', 'arisanUserProduks.produk'])->findOrFail($id); // Ambil data peserta beserta produk
 
-    // Pastikan gambar ada pada produk
-    if ($data->arisanUserProduks->isNotEmpty()) {
-        foreach ($data->arisanUserProduks as $arisanProduk) {
-            $produk = $arisanProduk->produk;
-            // Cek jika produk memiliki gambar
-            if ($produk && $produk->gambar) {
-                $produk->gambar_url = asset('images/produk/' . $produk->gambar); // Menambahkan URL gambar
+        // Pastikan gambar ada pada produk
+        if ($data->arisanUserProduks->isNotEmpty()) {
+            foreach ($data->arisanUserProduks as $arisanProduk) {
+                $produk = $arisanProduk->produk;
+                // Cek jika produk memiliki gambar
+                if ($produk && $produk->gambar) {
+                    $produk->gambar_url = asset('images/produk/' . $produk->gambar); // Menambahkan URL gambar
+                }
             }
         }
-    }
 
-    return view('approvedpeserta.show', compact('data'));
-}
+        return view('approvedpeserta.show', compact('data'));
+    }
 
 
 
@@ -98,30 +98,26 @@ class ApprovedPesertaController extends Controller
         //
     }
 
-   public function approve(Request $request, $id)
-{
-    // Temukan peserta berdasarkan ID yang diberikan di request
-    $data = ArisanUser::find($id);
+    public function approve(Request $request, $id)
+    {
+        // Temukan peserta berdasarkan ID yang diberikan di request
+        $data = ArisanUser::with('user', 'arisanUserProduks.produk')->find($id);
 
-    // Periksa jika peserta tidak ditemukan
-    if (!$data) {
-        return response()->json(['success' => false, 'message' => 'Peserta tidak ditemukan.']);
+        // Periksa jika peserta tidak ditemukan
+        if (!$data) {
+            return response()->json(['success' => false, 'message' => 'Peserta tidak ditemukan.']);
+        }
+
+        // Periksa jika peserta sudah disetujui
+        if ($data->is_approved == 1) {
+            return response()->json(['success' => false, 'message' => 'Peserta sudah disetujui sebelumnya.']);
+        }
+
+        // Ubah status is_approved menjadi 1
+        $data->is_approved = 1;
+        $data->save();
+
+        // Kirimkan response berhasil
+        return response()->json(['success' => true, 'message' => 'Peserta berhasil disetujui.', 'data' => $data]);
     }
-
-    // Periksa jika peserta sudah disetujui
-    if ($data->is_approved == 1) {
-        return response()->json(['success' => false, 'message' => 'Peserta sudah disetujui sebelumnya.']);
-    }
-
-    // Ubah status is_approved menjadi 1
-    $data->is_approved = 1;
-    $data->save();
-
-    // Kirimkan response berhasil
-    return response()->json(['success' => true, 'message' => 'Peserta berhasil disetujui.']);
-}
-
-
-
-
 }

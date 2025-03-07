@@ -142,7 +142,6 @@
 
     $(document).on('click', '.btn-approve',function() {
     const arisanUser = $(this).data('data');
-    console.log(arisanUser)
         // Konfirmasi apakah user yakin untuk menyetujui dengan SweetAlert2
     Swal.fire({
     title: 'Apakah Anda yakin?',
@@ -167,7 +166,16 @@
     if (response.success) {
         showToast(response.message, 'success');
 
-        const message = "anda telah disetujui bergabung arisan, anda sudah bisa login dengan akun anda";
+        let products = 'Produk arisan anda:\n';
+        console.log(response.data)
+        response.data.arisan_user_produks.forEach(function(arisanProduk, index) {
+            products += `${index + 1}. ${arisanProduk.produk.nama} (${formatCurrency(arisanProduk.produk.harga_jual)}) x ${arisanProduk.qty} = ${formatCurrency(arisanProduk.total_price)}\n`;
+        });
+
+        const jmlBayar = `Jumlah bayar: ${response.data.jumlah_bayar}x\n`;
+        const perMinggu = `Per minggu: ${formatCurrency(response.data.per_minggu)}\n`;
+
+        const message = encodeURIComponent(`${products + jmlBayar + perMinggu}anda telah disetujui bergabung arisan, anda sudah bisa login dengan akun anda`);
         const waUrl = `https://wa.me/+${arisanUser.user.phone_number}?text=${message}`;
 
         window.open(waUrl, "_blank"); // Membuka WhatsApp dalam tab baru
