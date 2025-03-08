@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\ArisanUser;
 use Yajra\DataTables\DataTables;
 use App\Models\ArisanUserProduk;
+use App\Models\Category;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class ApprovedPesertaController extends Controller
 {
@@ -39,7 +42,11 @@ class ApprovedPesertaController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::with('produks')->get();
+        $data = [
+            'categories' => $categories,
+        ];
+        return view('approvedpeserta.create', $data);
     }
 
     /**
@@ -47,7 +54,48 @@ class ApprovedPesertaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+
+            DB::transaction(function () use ($request) {
+                $user = User::create([
+                    'name' => $request->name,
+                    'phone_number' => $request->phone,
+                    'address' => $request->address,
+                ]);
+
+                $arisanUser = ArisanUser::create([
+                    'user_id' => $user->id,
+                    'is_mabel' => $request->jumlahBayar,
+                    'status' => $request->status,
+                    'tabungan' => 0,
+                    'is_approved' => true,
+                    'is_finished' => false,
+                    'total_price' => $request->totalBayar,
+                    'jumlah_bayar' => $request->jumlahBayar,
+                    'per_minggu' => $request->perMinggu,
+                ]);
+
+                foreach ($request->produks as $produk) {
+                    ArisanUserProduk::create([
+                        'arisan_user_id' => $arisanUser->id,
+                        'produks_id' => $produk['produk']['id'],
+                        'qty' => $produk['qty'],
+                        'price' => $produk['produk']['harga_jual'],
+                        'total_price' => $produk['total'],
+                    ]);
+                }
+            });
+
+            return response()->json([
+                'success' => true,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 400);
+        }
     }
 
     /**

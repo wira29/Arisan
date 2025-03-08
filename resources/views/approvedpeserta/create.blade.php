@@ -2,8 +2,28 @@
 
 @section('content')
 <div class="container-fluid">
-    <x-banner title="Join Arisan" description="Silakan memilih produk yang ingin anda bayar."></x-banner>
+    <x-banner title="Tambah Peserta" description="Tambah peserta baru yang tidak memiliki akun di situs web ini."></x-banner>
 
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-md-6 form-group">
+                        <label class="mb-2" for="name">Nama</label>
+                        <input type="text" class="form-control" id="name" placeholder="Masukkan nama peserta">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="mb-2" for="phone">No. Telepon</label>
+                        <input type="text" class="form-control" id="phone" placeholder="Masukkan no. telepon peserta">
+                    </div>
+                    <div class="col-md-12 form-group mt-3">
+                        <label class="mb-2" for="address">Alamat</label>
+                        <textarea type="text" class="form-control" id="address" placeholder="Masukkan alamat peserta"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-7 mb-3">
             <div class="accordion" id="accordionExample">
@@ -32,15 +52,15 @@
         <div class="col-md-5">
           <div class="table-responsive rounded-2 mb-4">
             <div>
-              <h6>Status</h6>
-            </div>
-            <div class="mb-3">
-                <input type="radio" class="btn-check" name="status" value="individu" id="option1" autocomplete="off" checked="">
-                <label class="btn btn-outline-primary rounded-pill font-medium me-2 mb-2" for="option1">Individu</label>
-
-                <input type="radio" class="btn-check" name="status" value="group" id="option2" autocomplete="off">
-                <label class="btn btn-outline-primary rounded-pill font-medium me-2 mb-2" for="option2">Grup</label>
-            </div>
+                <h6>Status</h6>
+              </div>
+              <div class="mb-3">
+                  <input type="radio" class="btn-check" name="status" value="individu" id="option1" autocomplete="off" checked="">
+                  <label class="btn btn-outline-primary rounded-pill font-medium me-2 mb-2" for="option1">Individu</label>
+  
+                  <input type="radio" class="btn-check" name="status" value="group" id="option2" autocomplete="off">
+                  <label class="btn btn-outline-primary rounded-pill font-medium me-2 mb-2" for="option2">Grup</label>
+              </div>
             <table class="table border text-nowrap customize-table mb-0 align-middle">
               <thead class="text-dark fs-4">
                 <tr>
@@ -115,23 +135,26 @@
 
     function joinArisan() {
       $.ajax({
-        url: '{{ route('joinAction') }}',
+        url: '{{ route('approvedpeserta.store') }}',
         method: 'POST',
         data: {
-          produks: items,
-          jumlahBayar: jumlahBayar,
-          status: status,
-          perMinggu: perMinggu,
-          totalBayar: totalPrice,
-          _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            name: $('#name').val(),
+            phone: $('#phone').val(),
+            address: $('#address').val(),
+            produks: items,
+            jumlahBayar: jumlahBayar,
+            status: status,
+            perMinggu: perMinggu,
+            totalBayar: totalPrice,
+            _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         },
         success: function(data) {
           showToast("Berhasil bergabung arisan!", 'success');
-          window.location.href = "/beranda";
+          window.location.href = "/admin/approvedpeserta";
         },
         error: function(data) {
           showToast("Gagal bergabung arisan!", 'error');
-          window.location.href = "/beranda";
+          window.location.href = "/admin/approvedpeserta";
         }
       });
     }
