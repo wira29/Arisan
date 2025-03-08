@@ -37,6 +37,7 @@ class BerandaController extends Controller
                 $arisanUser = ArisanUser::create([
                     'user_id' => auth()->id(),
                     'is_mabel' => $request->jumlahBayar,
+                    'status' => $request->status,
                     'tabungan' => 0,
                     'is_approved' => false,
                     'is_finished' => false,

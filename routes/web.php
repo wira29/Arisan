@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/pembayaran/bayar', [PembayaranController::class, 'bayar'])->name('pembayaran.bayar');
 
         Route::post('/approvepeserta/{id}/approve', [ApprovedPesertaController::class, 'approve'])->name('approve-peserta');
+        Route::post('/tutup-arisan', [SettingController::class, 'tutupArisan'])->name('setting.tutupArisan');
         Route::get('/approvedpeserta/print/{id}', [ApprovedPesertaController::class, 'print'])->name('approvedpeserta.print');
 
     });

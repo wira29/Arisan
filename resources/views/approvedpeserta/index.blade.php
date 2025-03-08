@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <x-banner title="Peserta" description="Daftar produk yang ada di situs web ini."></x-banner>
+    <x-banner title="Peserta" description="Daftar peserta yang ada di situs web ini." action="{{ route('approvedpeserta.create') }}"></x-banner>
     <div class="card mt-3">
         <div class="card-body">
             <table id="example" class="table" style="width:100%">
@@ -20,7 +20,7 @@
                         <th class="text-center">No</th>
                         <th class="text-center">Nama</th>
                         <th class="text-center">Approved</th>
-                        <th class="text-center">Tabungan</th>
+                        <th class="text-center">Status</th>
                         <th class="text-center">Total harga</th>
                         <th class="text-center">Jumlah bayar</th>
                         <th class="text-center">Per minggu</th>
@@ -33,7 +33,7 @@
                         <th class="text-center">No</th>
                         <th class="text-center">Nama</th>
                         <th class="text-center">Approved</th>
-                        <th class="text-center">Selesai</th>
+                        <th class="text-center">Status</th>
                         <th class="text-center">Total harga</th>
                         <th class="text-center">Jumlah bayar</th>
                         <th class="text-center">Per minggu</th>
@@ -87,9 +87,9 @@
                 }
                 },
                 {
-                data: 'tabungan',
+                data: 'status',
                 render: function(data, type, row) {
-                return `<td>${formatCurrency(data)}</td>`
+                return `<td>${data}</td>`
                 }
                 },
                 {
