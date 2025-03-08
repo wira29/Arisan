@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/pembayaran/bayar', [PembayaranController::class, 'bayar'])->name('pembayaran.bayar');
 
         Route::post('/approvepeserta/{id}/approve', [ApprovedPesertaController::class, 'approve'])->name('approve-peserta');
+        Route::get('/approvedpeserta/print/{id}', [ApprovedPesertaController::class, 'print'])->name('approvedpeserta.print');
+
     });
 
     // peserta

@@ -123,11 +123,15 @@
                 render: function(data, type, row) {
                 // URL untuk halaman detail
                 let url = `{{ route('approvedpeserta.show', 0) }}`.replace('/0', '/' + row.id);
+                let printUrl = `{{ route('approvedpeserta.print', 0) }}`.replace('/0', '/' + row.id);
+                
                 
                 // Tombol Detail dan Approved tanpa WhatsApp
                 if (row.is_approved == 1) {
                     return `
-                    <a href="${url}" class="btn btn-warning btn-sm mx-2">Detail</a>`
+                    <a href="${url}" class="btn btn-warning btn-sm mx-2">Detail</a>
+                    <a href="${printUrl}" target="_blank" class="btn btn-success btn-sm mx-2">Print</a>`
+                    
                 }
 
                 return `
