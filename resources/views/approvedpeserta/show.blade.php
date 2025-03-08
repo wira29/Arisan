@@ -29,13 +29,13 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td class="text-center">
-                            <img src="{{ asset('images/produk/' . $produk->produk->gambar) }}" alt="{{ $produk->produk->nama }}"
+                            <img src="{{ asset('storage/produk/' . $produk->gambar) }}" alt="{{ $produk->nama }}"
                                 width="100">
                         </td>
                         <td class="text-center">{{ $produk->produk->nama }}</td>
                         <td class="text-center">{{ $produk->qty }}</td>
-                        <td class="text-center">{{ $produk->price }}</td>
-                        <td class="text-center">{{ $produk->total_price }}</td>
+                        <td class="text-center">Rp {{ number_format($produk->price, 0, ',', '.') }}</td>
+                        <td class="text-center">Rp {{ number_format($produk->total_price, 0, ',', '.') }}</td>
                     </tr>
                     @endforeach
                 </tbody>

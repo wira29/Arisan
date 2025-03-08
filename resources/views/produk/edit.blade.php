@@ -49,7 +49,17 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="mb-2" for="is_meubel">Jenis Produk</label>
+                            <select name="is_meubel" class="form-control">
+                                <option value="0" {{ $produk->is_meubel == 0 ? 'selected' : '' }}>Bukan Mebel</option>
+                                <option value="1" {{ $produk->is_meubel == 1 ? 'selected' : '' }}>Mebel</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="mb-2" for="nama">Kategori</label>
                             <select name="category_id" class="form-control">
@@ -66,6 +76,8 @@
                             </span>
                             @enderror
                         </div>
+
+                        
 
                     <div class="col-md-6">
                     <div class="form-group">
