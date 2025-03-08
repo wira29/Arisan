@@ -18,7 +18,7 @@ class ApprovedPesertaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ArisanUser::with('user', 'arisanUserProduks.produk'); // Pastikan user dimuat
+            $data = ArisanUser::with('user', 'arisanUserProduks.produk')->unfinished(); // Pastikan user dimuat
 
             return DataTables::of($data)
                 ->addIndexColumn()
