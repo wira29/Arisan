@@ -47,6 +47,9 @@ class ProdukController extends Controller
             $validated['gambar'] = null;
         }
 
+        // Set is_mebel menjadi 1 jika ada di request, jika tidak, set ke 0
+    $validated['is_meubel'] = $request->has('is_meubel') ? 1 : 0;
+
         Produk::create($validated);
         return to_route('produk.index')->with('success', 'Berhasil menambahkan produk.');
     }
@@ -82,6 +85,10 @@ class ProdukController extends Controller
 
             $validated['gambar'] = $request->file('gambar')->store('produk');
         }
+
+          // Set is_mebel menjadi 1 jika ada di request, jika tidak, set ke 0
+     $validated['is_meubel'] = $request->input('is_meubel', 0);
+
 
         $produk->update($validated);
 

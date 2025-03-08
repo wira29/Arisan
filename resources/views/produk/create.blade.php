@@ -69,6 +69,16 @@
                         </div>
                     </div>
 
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label class="mb-2" for="is_meubel">Jenis Produk</label>
+                            <select name="is_meubel" class="form-control">
+                                <option value="0">Bukan Mebel</option>
+                                <option value="1">Mebel</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="mb-2" for="gambar">Gambar Produk</label>
