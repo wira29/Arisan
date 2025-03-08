@@ -18,7 +18,7 @@
                       <div class="accordion-body row row-cols-4 gap-2">
                         @foreach ($category->produks as $produk)
                         <div class="col border border-dark-subtle rounded p-2 text-center item" data-produk="{{ $produk }}">
-                          <img class="rounded img-fluid" src="https://picsum.photos/seed/picsum/400" alt="">
+                          <img class="rounded img-fluid" src="{{ asset('storage/' . $produk->gambar) }}" alt="">
                           <h5>{{ $produk->nama }}</h5>
                           <h6>{{ \App\Helpers\CurrencyFormat::formatRupiah($produk->harga_jual) }}</h6>
                       </div>
