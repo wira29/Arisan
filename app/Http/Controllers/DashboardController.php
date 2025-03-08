@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\ArisanUser;
+use Yajra\DataTables\DataTables;
 
 class DashboardController extends Controller
 {
@@ -12,15 +13,22 @@ class DashboardController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+{
+    $produk = Produk::all();
+    $arisanUser = ArisanUser::where('is_approved', 1)
+                        ->where('is_finished', 0)
+                        ->get();
 
-        $produk = Produk::all();
-        $arisanUser = ArisanUser::where('is_approved', 1)
-                            ->where('is_finished', 0)
-                            ->get();
+    $totalPrice = $arisanUser->sum('total_price'); // Total semua total_price
+    $totalTabungan = $arisanUser->sum('tabungan'); // Total semua tabungan
+    $grandTotal = $totalPrice + $totalTabungan; // Total keseluruhan
 
-        return view('dashboard.index', compact('produk', 'arisanUser'));
-    }
+    return view('dashboard.index', compact('produk', 'arisanUser', 'totalPrice', 'totalTabungan', 'grandTotal'));
+}
+
+
+
+
 
     /**
      * Show the form for creating a new resource.

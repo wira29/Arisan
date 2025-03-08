@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/approvepeserta/{id}/approve', [ApprovedPesertaController::class, 'approve'])->name('approve-peserta');
         Route::post('/tutup-arisan', [SettingController::class, 'tutupArisan'])->name('setting.tutupArisan');
         Route::get('/approvedpeserta/print/{id}', [ApprovedPesertaController::class, 'print'])->name('approvedpeserta.print');
+        Route::get('/dashboard/data-peserta', [DashboardController::class, 'getDataPeserta'])->name('dashboard.dataPeserta');
+
 
     });
 
