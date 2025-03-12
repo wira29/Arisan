@@ -11,11 +11,11 @@ use App\Http\Controllers\Peserta\RiwayatPembayaranController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('auth.login');
-});
 
 Auth::routes();
+Route::get('/', function () {
+    return to_route('login');
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

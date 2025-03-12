@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\GuestMiddleware;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -25,7 +28,16 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/beranda';
+    protected function redirectTo()
+    {
+        $role = auth()->user()->roles->pluck('name')[0];
+        // dd($role);
+        if ($role == 'admin') {
+            return '/admin/dashboard';
+        }
+        return '/beranda';
+    }
 
     /**
      * Create a new controller instance.
@@ -34,7 +46,17 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware(GuestMiddleware::class)->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showLoginForm()
+    {
+        return view('auth.login');
     }
 }

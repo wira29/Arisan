@@ -66,6 +66,14 @@
                           </span>
                       @enderror
                     </div>
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                      <div class="form-check">
+                        <input class="form-check-input primary" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        <label class="form-check-label text-dark" for="remember">
+                          Ingat saya
+                        </label>
+                      </div>
+                    </div>
                     <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Masuk</button>
                     <div class="d-flex align-items-center justify-content-center">
                       <p class="fs-4 mb-0 fw-medium">Belum punya akun?</p>
