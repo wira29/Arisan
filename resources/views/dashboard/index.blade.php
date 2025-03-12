@@ -69,11 +69,16 @@
                 </thead>
                 <tbody>
                     @foreach ($arisanUser as $index => $peserta)
+                    @php 
+                        $tabungan = App\Models\ArisanUserProduk::whereRelation('produk', function($q) {
+                            return $q->where('is_tabungan', true);
+                        })->where('arisan_user_id', $peserta->id)->sum('total_price');
+                    @endphp
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $peserta->user->name }}</td> <!-- Pastikan ada relasi ke user -->
                         <td>Rp {{ number_format($peserta->total_price, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($peserta->tabungan, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($tabungan, 0, ',', '.') }}</td>
                     </tr>
                     @endforeach
                 </tbody>

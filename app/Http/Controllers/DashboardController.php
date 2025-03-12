@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\ArisanUser;
+use App\Models\ArisanUserProduk;
 use Yajra\DataTables\DataTables;
 
 class DashboardController extends Controller
@@ -13,18 +14,24 @@ class DashboardController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $produk = Produk::all();
-    $arisanUser = ArisanUser::where('is_approved', 1)
-                        ->where('is_finished', 0)
-                        ->get();
+    {
+        $produk = Produk::all();
+        $arisanUser = ArisanUser::with('arisanUserProduks')
+            ->active()
+            ->unfinished()
+            ->get();
 
-    $totalPrice = $arisanUser->sum('total_price'); // Total semua total_price
-    $totalTabungan = $arisanUser->sum('tabungan'); // Total semua tabungan
-    $grandTotal = $totalPrice + $totalTabungan; // Total keseluruhan
+        $totalTabungan = ArisanUserProduk::whereRelation('arisanUser', function ($q) {
+            return $q->active()->unfinished();
+        })->whereRelation('produk', function ($q) {
+            return $q->where('is_tabungan', true);
+        })->sum('total_price');
 
-    return view('dashboard.index', compact('produk', 'arisanUser', 'totalPrice', 'totalTabungan', 'grandTotal'));
-}
+        $totalPrice = $arisanUser->sum('total_price'); // Total semua total_price
+        $grandTotal = $totalPrice + $totalTabungan; // Total keseluruhan
+
+        return view('dashboard.index', compact('produk', 'arisanUser', 'totalPrice', 'totalTabungan', 'grandTotal'));
+    }
 
 
 

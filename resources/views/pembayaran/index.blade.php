@@ -13,7 +13,7 @@
     <x-banner title="Pembayaran" description="Daftar Pembayaran Peserta Arisan."></x-banner>
 
     <div class="card mt-3">
-        <div class="card-body">
+        <div class="card-body row">
             <div class="col-md-12">
                 <label for="exampleFormControlSelect1" class="mb-2">Pilih Peserta</label>
                 <select class="form-control select2" id="peserta">
@@ -21,6 +21,44 @@
                         <option value="{{ json_encode($user) }}">{{ $user->user->name }}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="col-md-6 mt-3">
+                <table>
+                    <tr>
+                        <th>Alamat</th>
+                        <td width="20%" class="text-center">:</td>
+                        <td id="address">Malang</td>
+                    </tr>
+                    <tr>
+                        <th>Nomor WA</th>
+                        <td width="20%" class="text-center">:</td>
+                        <td id="no_wa">083848020120</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td width="20%" class="text-center">:</td>
+                        <td id="status">Individu</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6 mt-3">
+                <table>
+                    <tr>
+                        <th>Bayar Berapa X</th>
+                        <td width="20%" class="text-center">:</td>
+                        <td id="jumlah_bayar">45x</td>
+                    </tr>
+                    <tr>
+                        <th>Bayar Dapat</th>
+                        <td width="20%" class="text-center">:</td>
+                        <td id="jumlah_bayar_dapat">20x</td>
+                    </tr>
+                    <tr>
+                        <th>Bayar per Minggu</th>
+                        <td width="20%" class="text-center">:</td>
+                        <td id="per_minggu">Rp.20.000</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
@@ -138,6 +176,7 @@ aria-hidden="true"
         function init() {
             let tbody = '';
             const user = JSON.parse($("#peserta").val());
+            console.log(user)
 
             $.ajax({
                 url: "{{ '/admin/pembayaran?userId=:id' }}".replace(':id', user.id),
@@ -162,6 +201,14 @@ aria-hidden="true"
                     }
 
                     $('#pembayaran-table').html(tbody);
+
+                    // set informasi user 
+                    $('#address').html(user.user.address);
+                    $('#status').html(user.status);
+                    $('#no_wa').html(user.user.phone_number);
+                    $('#jumlah_bayar').html(user.jumlah_bayar + "x");
+                    $('#jumlah_bayar_dapat').html(data.paid.length + "x");
+                    $('#per_minggu').html(formatCurrency(user.per_minggu));
                 },
                 error: function(data) {
                     showToast('Gagal mendapatkan data!', 'error');
