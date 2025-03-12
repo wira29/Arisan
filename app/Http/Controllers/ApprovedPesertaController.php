@@ -20,41 +20,38 @@ class ApprovedPesertaController extends Controller
         if ($request->ajax()) {
             $data = ArisanUser::with('user', 'arisanUserProduks.produk')->unfinished(); // Pastikan user dimuat
 
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('user_name', function ($row) {
-                return optional($row->user)->name ?? '-'; // Menghindari error jika user null
-            })
-            ->addColumn('action', function ($row) {
-                $url = route('approvedpeserta.show', $row->id);
-                $printUrl = route('approvedpeserta.print', $row->id); // Route untuk print
-                return '
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $url = route('approvedpeserta.show', $row->id);
+                    $printUrl = route('approvedpeserta.print', $row->id); // Route untuk print
+                    return '
                     <a href="' . $url . '" class="btn btn-warning btn-sm mx-2">Detail</a>
                     <a href="' . $printUrl . '" target="_blank" class="btn btn-success btn-sm mx-2">Print</a>
                 ';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('approvedpeserta.index');
     }
 
-    return view('approvedpeserta.index');
-}
+    public function print($id)
+    {
+        // Ambil data peserta yang sudah di-approve
+        $peserta = ArisanUser::with('user', 'arisanUserProduks.produk')
+            ->where('id', $id)
+            ->where('is_approved', 1) // Hanya peserta yang sudah di-approve
+            ->first();
 
-public function print($id)
-{
-    // Ambil data peserta yang sudah di-approve
-    $peserta = ArisanUser::with('user', 'arisanUserProduks.produk')
-        ->where('id', $id)
-        ->where('is_approved', 1) // Hanya peserta yang sudah di-approve
-        ->first();
+        // Jika peserta tidak ditemukan atau belum di-approve, redirect dengan pesan error
+        if (!$peserta) {
+            return redirect()->route('approvedpeserta.index')->with('error', 'Peserta belum di-approve atau tidak ditemukan.');
+        }
 
-    // Jika peserta tidak ditemukan atau belum di-approve, redirect dengan pesan error
-    if (!$peserta) {
-        return redirect()->route('approvedpeserta.index')->with('error', 'Peserta belum di-approve atau tidak ditemukan.');
+        return view('approvedpeserta.print', compact('peserta'));
     }
-
-    return view('approvedpeserta.print', compact('peserta'));
-}
 
 
 
