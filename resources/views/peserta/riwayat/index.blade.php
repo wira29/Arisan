@@ -53,9 +53,9 @@
         let currentKe = 0;
         let currentUser = null;
 
-        if ("{{ $user }}" !== null) {
+        @if ($user)
             init();
-        }
+        @endif
 
         function init() {
             let tbody = '';
