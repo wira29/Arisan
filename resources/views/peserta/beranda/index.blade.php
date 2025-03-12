@@ -22,6 +22,52 @@
         </div>
       </div>
     </div>
+
+    <!-- Menampilkan Produk yang Diikuti -->
+  @if ($detailPesanan && $detailPesanan->arisanUserProduks->isNotEmpty())
+  <div class="card mt-4">
+    <div class="card-header bg-white text-dark d-flex align-items-center justify-content-between shadow-sm border-bottom">
+      <div>
+        <h5 class="mb-1">Arisan yang Diikuti</h5>
+        <span class="fw-light" style="font-size: 0.9rem;">
+          <strong class="text-warning">{{ auth()->user()->name }}</strong>
+        </span>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        @foreach ($detailPesanan->arisanUserProduks as $item)
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ $item->produk->nama ?? 'Produk Tidak Ditemukan' }}</strong>
+            <p class="mb-0 text-muted">
+              Harga: Rp {{ number_format($item->price ?? 0, 0, ',', '.') }}
+              X  {{ $item->qty }} item
+            </p>
+          </div>
+          @if ($item->produk->gambar)
+          <img src="{{ asset('storage/' . $item->produk->gambar) }}" alt="Produk" class="img-fluid"
+            style="width: 50px; height: 50px; object-fit: cover;">
+          @endif
+        </li>
+        @endforeach
+      </ul>
+  
+      <!-- Bagian Total Harga -->
+      <div class="mt-3 p-3 bg-light rounded">
+        <h6 class="mb-0 text-end">
+          <strong>Total Harga Keseluruhan:</strong>
+          <span class="text-success fw-bold">Rp {{ number_format($detailPesanan->total_price, 0, ',', '.') }}</span>
+        </h6>
+      </div>
+  
+    </div>
+  </div>
+  @else
+  <div class="alert alert-warning mt-4">
+    Anda belum mengikuti produk arisan.
+  </div>
+  @endif
     <div class="row">
         @if ($checkCurrentArisan == 0)
         <div class="col-lg-12 d-flex align-items-stretch">
