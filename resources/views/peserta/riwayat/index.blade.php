@@ -15,6 +15,7 @@
     <div class="card mt-3">
         <div class="card-body">
             <div class="col-md-12 table-responsive">
+                @if ($user)
                 <table class="table" style="width:100%">
                     <thead>
                         <tr>
@@ -30,6 +31,9 @@
                         </tr>
                     </tbody>
                 </table>
+                @else 
+                <p class="text-center">Akun anda belum diverifikasi oleh admin</p>
+                @endif
             </div>
         </div>
     </div>
@@ -48,9 +52,8 @@
 
         let currentKe = 0;
         let currentUser = null;
-        let isApproved = parseInt("{{ $user->is_approved }}")
 
-        if (isApproved == 1) {
+        if ("{{ $user }}" !== null) {
             init();
         }
 
