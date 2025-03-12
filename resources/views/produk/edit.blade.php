@@ -61,6 +61,16 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label class="mb-2" for="is_tabungan">Jenis Produk</label>
+                            <select name="is_tabungan" class="form-control">
+                                <option value="0" {{ $produk->is_tabungan == 0 ? 'selected' : '' }}>Bukan Tabungan</option>
+                                <option value="1" {{ $produk->is_tabungan == 1 ? 'selected' : '' }}>Tabungan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label class="mb-2" for="nama">Kategori</label>
                             <select name="category_id" class="form-control">
                                 @foreach ($categories as $category)
