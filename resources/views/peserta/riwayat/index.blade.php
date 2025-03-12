@@ -55,9 +55,8 @@
 
         @if ($user)
             init();
-        @endif
 
-        function init() {
+            function init() {
             let tbody = '';
             let jumlah_bayar = parseInt("{{ $user->jumlah_bayar }}")
 
@@ -83,50 +82,7 @@
                 }
             });
         }
-
-        $(document).on('click', '.btn-bayar', function(e) {
-            e.preventDefault();
-            const user = $(this).data('user')
-            const ke = $(this).data('ke')
-            currentKe = ke
-            currentUser = user
-            $('#modal-bayar').modal('show');
-            $('#modal-bayar').find('form').attr('data-user', JSON.stringify(user)).attr('data-ke', ke)
-        });
-
-        $(document).on('submit', '#form-pembayaran', function(e) {
-            e.preventDefault();
-            // const user = $(this).data('user')
-            // const ke = $(this).data('ke')
-            const metodePembayaran = $('#metode-pembayaran').val();
-
-            $.ajax({
-                method: 'POST',
-                url: '{{ route('pembayaran.bayar') }}',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    arisan_user_id: currentUser.id,
-                    pembayaran_ke: currentKe,
-                    jumlah: currentUser.per_minggu,
-                    metode: metodePembayaran
-                },
-                success: function(data) {
-                    console.log(data)
-                    if (data.success) {
-                        showToast(data.message, 'success');
-                    } else {
-                        showToast(data.message, 'error');
-                    }
-
-                    init()
-                }, 
-                error: function(data) {
-                    showToast(data.message, 'error');
-                },
-            }).always(function() {
-                $('#modal-bayar').modal('hide');
-            })
-        });
+        @endif
     });
 </script>
 @endpush
