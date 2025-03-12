@@ -121,6 +121,15 @@
                                             autocomplete="new-password" placeholder="confirm password">
                               
                                 </div>
+
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Alamat</label>
+                             
+                               
+                                    <textarea id="address" type="text" class="form-control" name="address" required
+                                        autocomplete="address" placeholder="masukkan alamat anda"></textarea>
+                               
+                                 </div>
                             
                               
                                 <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">

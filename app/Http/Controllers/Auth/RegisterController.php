@@ -54,6 +54,7 @@ class RegisterController extends Controller
             'phone_number' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'address' => ['required', 'string'],
         ]);
     }
 
@@ -70,6 +71,7 @@ class RegisterController extends Controller
             'phone_number' => $data['phone_number'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'address' => $data['address'],
         ]);
 
         $user->assignRole(RoleEnum::PESERTA->value);
