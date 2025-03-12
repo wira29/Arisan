@@ -63,6 +63,7 @@
                     <tr>
                         <th>#</th>
                         <th>Nama Peserta</th>
+                        <th>Status Peserta</th>
                         <th>Total Semua Arisan (Rp)</th>
                         <th>Total Semua Tabungan (Rp)</th>
                     </tr>
@@ -77,21 +78,43 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $peserta->user->name }}</td> <!-- Pastikan ada relasi ke user -->
+                        <td>{{ $peserta->status }}</td>
                         <td>Rp {{ number_format($peserta->total_price, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($tabungan, 0, ',', '.') }}</td>
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <tr class="table-secondary">
-                        <th colspan="2" class="text-end">Total Arisan:</th>
-                        <th>Rp {{ number_format($totalPrice, 0, ',', '.') }}</th>
-                        <th>Rp {{ number_format($totalTabungan, 0, ',', '.') }}</th>
-                    </tr>
+
+                   <tr class="table-secondary">
+                    <th colspan="3" class="text-end">Total Arisan:</th>
+                    <th colspan="3" class="text-start">Rp {{ number_format($totalPrice, 0, ',', '.') }}</th>
+                </tr>
+                <tr class="table-secondary">
+                    <th colspan="3" class="text-end">Total Tabungan:</th>
+                    <th colspan="2" class="text-start">Rp {{ number_format($totalTabungan, 0, ',', '.') }}</th>
+                </tr>
+
+                <tr class="table-success">
+                    <th colspan="3" class="text-end">Total Keseluruhan:</th>
+                    <th colspan="3">Rp {{ number_format($grandTotal, 0, ',', '.') }}</th>
+                </tr>
+
                     <tr class="table-success">
-                        <th colspan="2" class="text-end">Total Keseluruhan:</th>
-                        <th colspan="2">Rp {{ number_format($grandTotal, 0, ',', '.') }}</th>
-                    </tr>
+                            <th colspan="3" class="text-end">Total Arisan Individu:</th>
+                            <th colspan="3">Rp {{ number_format($totalIndividu, 0, ',', '.') }}</th>
+                        </tr>
+                        
+                        <tr class="table-success">
+                            <th colspan="3" class="text-end">Total Arisan Grup:</th>
+                            <th colspan="3">Rp {{ number_format($totalGrup, 0, ',', '.') }}</th>
+                        </tr>
+
+                  
+                
+
+                    
+                    
                 </tfoot>
             </table>
         </div>

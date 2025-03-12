@@ -29,8 +29,10 @@ class DashboardController extends Controller
 
         $totalPrice = $arisanUser->sum('total_price'); // Total semua total_price
         $grandTotal = $totalPrice + $totalTabungan; // Total keseluruhan
+        $totalIndividu = $arisanUser->where('status', 'individu')->sum('total_price');
+        $totalGrup = $arisanUser->where('status', 'group')->sum('total_price');
 
-        return view('dashboard.index', compact('produk', 'arisanUser', 'totalPrice', 'totalTabungan', 'grandTotal'));
+        return view('dashboard.index', compact('produk', 'arisanUser', 'totalPrice', 'totalTabungan', 'grandTotal', 'totalIndividu', 'totalGrup'));
     }
 
 
