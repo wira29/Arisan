@@ -14,12 +14,25 @@ use Illuminate\Support\Facades\DB;
 class BerandaController extends Controller
 {
     public function index()
-    {
-        $data = [
-            'checkCurrentArisan' => ArisanUser::where(['is_finished' => false, 'user_id' => auth()->id()])->count(),
-        ];
-        return view('peserta.beranda.index', $data);
-    }
+{
+    // Ambil ID pengguna yang sedang login
+    $userId = auth()->id();
+
+    // Ambil data pengguna yang sedang berpartisipasi dalam arisan dan produk yang diikuti
+    $detailPesanan = ArisanUser::with(['user', 'arisanUserProduks.produk'])
+        ->where('user_id', $userId)
+        ->where('is_finished', false)
+        ->first(); // Ambil satu arisan aktif
+
+    // Data yang dikirim ke tampilan
+    $data = [
+        'checkCurrentArisan' => ArisanUser::where(['is_finished' => false, 'user_id' => $userId])->count(),
+        'detailPesanan' => $detailPesanan,
+    ];
+
+    return view('peserta.beranda.index', $data);
+}
+
 
     public function join()
     {
