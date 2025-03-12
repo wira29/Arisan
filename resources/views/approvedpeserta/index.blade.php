@@ -74,7 +74,7 @@
                     searchable: false 
                 },  
                 {
-                data: 'user_name', // Ubah dari 'user_id' ke 'user_name'
+                data: 'user.name', // Ubah dari 'user_id' ke 'user_name'
                 render: function(data, type, row) {
                 return `<td>${data}</td>`; // Menampilkan nama user
                 }

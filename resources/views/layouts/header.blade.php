@@ -41,7 +41,7 @@
                     <img src="{{ asset('assets') }}/images/profile/user-1.jpg" class="rounded-circle" width="80" height="80" alt="" />
                     <div class="ms-3">
                       <h5 class="mb-1 fs-3">{{ auth()->user()->name }}</h5>
-                      <span class="mb-1 d-block text-dark">{{ auth()->user()->arisanUser->status }}</span>
+                      <span class="mb-1 d-block text-dark">{{ auth()->user()?->arisanUser?->status ?? "admin" }}</span>
                       <p class="mb-0 d-flex text-dark align-items-center gap-2">
                         <i class="ti ti-mail fs-4"></i> {{ auth()->user()->email }}
                       </p>
