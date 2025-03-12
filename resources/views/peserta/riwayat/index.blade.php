@@ -10,20 +10,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <x-banner title="Pembayaran" description="Daftar Pembayaran Peserta Arisan."></x-banner>
-
-    <div class="card mt-3">
-        <div class="card-body">
-            <div class="col-md-12">
-                <label for="exampleFormControlSelect1" class="mb-2">Pilih Peserta</label>
-                <select class="form-control select2" id="peserta">
-                    @foreach ($users as $user)
-                        <option value="{{ json_encode($user) }}">{{ $user->user->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </div>
+    <x-banner title="Riwayat Pembayaran" description="Riwayat Pembayaran Anda."></x-banner>
 
     <div class="card mt-3">
         <div class="card-body">
@@ -35,79 +22,18 @@
                             <th>Tanggal</th>
                             <th>Jumlah</th>
                             <th>Metode</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="pembayaran-table">
-                        
-                       <tr>
-                        <td class="text-center" colspan="5">-- Tidak ada data --</td>
-                       </tr>
+                        <tr>
+                            <td class="text-center" colspan="5">-- Tidak ada data --</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>        
-
-
-<!-- modal bayar  -->
-<div
-class="modal fade"
-id="modal-bayar"
-tabindex="-1"
-aria-labelledby="mySmallModalLabel"
-aria-hidden="true"
->
-<div class="modal-dialog modal-sm">
-<form action="" id="form-pembayaran">
-  <div class="modal-content">
-    <div
-      class="modal-header d-flex align-items-center"
-    >
-      <h4 class="modal-title" id="myModalLabel">
-        Pembayaran
-      </h4>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-      ></button>
-    </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label class="mr-sm-2 mb-2" for="inlineFormCustomSelect">Metode Pembayaran</label>
-            <select class="form-select mr-sm-2" id="metode-pembayaran">
-              <option value="Cash">Cash</option>
-              <option value="Transfer">Transfer</option>
-              <option value="E-Wallet">E-Wallet</option>
-              <option value="QRIS">QRIS</option>
-            </select>
-          </div>
-    </div>
-    <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-light-danger text-danger font-medium waves-effect"
-        data-bs-dismiss="modal"
-      >
-        Tutup
-      </button>
-      <button
-        type="submit"
-        class="btn btn-primary font-medium waves-effect"
-      >
-        Submit
-      </button>
-    </div>
-</form>
-  </div>
-  <!-- /.modal-content -->
-</div>
-<!-- /.modal-dialog -->
-</div>
-<!-- end modal bayar  -->
 @endsection
 
 @push('js')
@@ -123,40 +49,23 @@ aria-hidden="true"
         let currentKe = 0;
         let currentUser = null;
 
-        // For select 2
-        //***********************************//
-        $(".select2").select2({
-            width: '100%'
-        });
-
         init();
-
-        $("#peserta").on('change', function() {
-            init();
-        });
 
         function init() {
             let tbody = '';
-            const user = JSON.parse($("#peserta").val());
+            let jumlah_bayar = parseInt("{{ $user->jumlah_bayar }}")
 
             $.ajax({
-                url: "{{ '/admin/pembayaran?userId=:id' }}".replace(':id', user.id),
+                url: "{{ '/riwayat' }}",
                 method: 'GET',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    userId: user.id
-                },
                 success: function(data) {
-                    for (let i = 0; i < user.jumlah_bayar; i++) {
+                    for (let i = 0; i < jumlah_bayar; i++) {
                         const is_paid = data.paid.includes(i + 1);
                         tbody += `<tr>
                                     <td>${is_paid ? `<s>minggu-${i + 1}</s>` : `minggu-${i + 1}`}</td>
                                     <td>${is_paid ? formatDate(data.pembayaran[i].created_at) : '-'}</td>
                                     <td>${is_paid ? formatCurrency(data.pembayaran[i].jumlah) : 'Rp. 0'}</td>
                                     <td>${is_paid ? data.pembayaran[i].metode : '-'}</td>
-                                    <td>
-                                        ${!is_paid ? `<a href="#" class="btn btn-sm btn-primary btn-bayar" data-ke='${i + 1}' data-user='${JSON.stringify(user)}'>Bayar</a>` : '-'}
-                                    </td>
                                 </tr>`;
                         
                     }
