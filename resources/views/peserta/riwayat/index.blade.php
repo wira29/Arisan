@@ -48,8 +48,11 @@
 
         let currentKe = 0;
         let currentUser = null;
+        let isApproved = parseInt("{{ $user->is_approved }}")
 
-        init();
+        if (isApproved == 1) {
+            init();
+        }
 
         function init() {
             let tbody = '';

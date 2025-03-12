@@ -97,7 +97,7 @@
             <span class="hide-menu">Arisan</span>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="{{ route('pembayaran') }}" aria-expanded="false">
+            <a class="sidebar-link" href="{{ route('riwayat') }}" aria-expanded="false">
               <span>
                 <i class="ti ti-notes"></i>
               </span>
