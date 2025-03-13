@@ -49,44 +49,45 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="mb-2" for="is_meubel">Jenis Produk</label>
-                            <select name="is_meubel" class="form-control">
-                                <option value="0" {{ $produk->is_meubel == 0 ? 'selected' : '' }}>Bukan Mebel</option>
-                                <option value="1" {{ $produk->is_meubel == 1 ? 'selected' : '' }}>Mebel</option>
-                            </select>
-                        </div>
+                   <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="mb-2" for="is_meubel">Jenis Produk</label>
+                        <select name="is_meubel" class="form-control">
+                            <option value="0" {{ old('is_meubel', $produk->is_meubel) == 0 ? 'selected' : '' }}>Bukan Mebel</option>
+                            <option value="1" {{ old('is_meubel', $produk->is_meubel) == 1 ? 'selected' : '' }}>Mebel</option>
+                        </select>
                     </div>
+                </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="mb-2" for="is_tabungan">Jenis Produk</label>
                             <select name="is_tabungan" class="form-control">
-                                <option value="0" {{ $produk->is_tabungan == 0 ? 'selected' : '' }}>Bukan Tabungan</option>
-                                <option value="1" {{ $produk->is_tabungan == 1 ? 'selected' : '' }}>Tabungan</option>
+                                <option value="0" {{ old('is_tabungan', $produk->is_tabungan) == 0 ? 'selected' : '' }}>Bukan Tabungan
+                                </option>
+                                <option value="1" {{ old('is_tabungan', $produk->is_tabungan) == 1 ? 'selected' : '' }}>Tabungan</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="mb-2" for="nama">Kategori</label>
+                            <label class="mb-2" for="category_id">Kategori</label>
                             <select name="category_id" class="form-control">
                                 @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">
+                                <option value="{{ $category->id }}" {{ old('category_id', $produk->category_id) == $category->id ?
+                                    'selected' : '' }}>
                                     {{ $category->nama }}
                                 </option>
-                    
                                 @endforeach
                             </select>
-                            @error('category')
+                            @error('category_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
-
+                    </div>
                         
 
                     <div class="col-md-6">

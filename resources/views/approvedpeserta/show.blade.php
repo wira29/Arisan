@@ -5,7 +5,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-text">{{ $data->user->name ?? '-' }}</h5>
-            <p class="card-text">Status: </p>
+            <p class="card-text">Status: {{ $data->status ?? '-' }}</p>
             <!-- Anda bisa menambahkan lebih banyak konten di sini -->
         </div>
     </div>
