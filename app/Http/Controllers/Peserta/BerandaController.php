@@ -8,30 +8,42 @@ use App\Models\ArisanUser;
 use App\Models\ArisanUserProduk;
 use App\Models\Category;
 use App\Models\Produk;
+use App\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BerandaController extends Controller
 {
     public function index()
-{
-    // Ambil ID pengguna yang sedang login
-    $userId = auth()->id();
+    {
+        // Ambil ID pengguna yang sedang login
+        $userId = auth()->id();
 
-    // Ambil data pengguna yang sedang berpartisipasi dalam arisan dan produk yang diikuti
-    $detailPesanan = ArisanUser::with(['user', 'arisanUserProduks.produk'])
-        ->where('user_id', $userId)
-        ->where('is_finished', false)
-        ->first(); // Ambil satu arisan aktif
+        // Ambil data pengguna yang sedang berpartisipasi dalam arisan dan produk yang diikuti
+        $detailPesanan = ArisanUser::with(['user', 'arisanUserProduks.produk'])
+            ->where('user_id', $userId)
+            ->where('is_finished', false)
+            ->first(); // Ambil satu arisan aktif
 
-    // Data yang dikirim ke tampilan
-    $data = [
-        'checkCurrentArisan' => ArisanUser::where(['is_finished' => false, 'user_id' => $userId])->count(),
-        'detailPesanan' => $detailPesanan,
-    ];
+        // cek arisan 
+        $setting = Setting::first();
+        if (Carbon::now()->between(Carbon::make($setting->tanggal_mulai), Carbon::make($setting->tanggal_mulai)->addWeeks(3))) {
+            $checkCurrentArisan = ArisanUser::where(['is_finished' => false, 'user_id' => $userId])->count();
+        } else {
+            $checkCurrentArisan = -1;
+        }
 
-    return view('peserta.beranda.index', $data);
-}
+        // dd($checkCurrentArisan);
+
+        // Data yang dikirim ke tampilan
+        $data = [
+            'checkCurrentArisan' => $checkCurrentArisan,
+            'detailPesanan' => $detailPesanan,
+        ];
+
+        return view('peserta.beranda.index', $data);
+    }
 
 
     public function join()

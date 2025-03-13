@@ -21,7 +21,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware('auth')->group(function () {
     // admin 
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware('role:admin')->group(function () {
         Route::resources([
             'produk' => ProdukController::class,
             'setting' => SettingController::class,
@@ -39,8 +39,10 @@ Route::middleware('auth')->group(function () {
     });
 
     // peserta
-    Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
-    Route::get('/join', [BerandaController::class, 'join'])->name('join');
-    Route::post('/joinAction', [BerandaController::class, 'joinAction'])->name('joinAction');
-    Route::get('/riwayat', [RiwayatPembayaranController::class, 'index'])->name('riwayat');
+    Route::middleware('role:peserta')->group(function () {
+        Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
+        Route::get('/join', [BerandaController::class, 'join'])->name('join');
+        Route::post('/joinAction', [BerandaController::class, 'joinAction'])->name('joinAction');
+        Route::get('/riwayat', [RiwayatPembayaranController::class, 'index'])->name('riwayat');
+    });
 });

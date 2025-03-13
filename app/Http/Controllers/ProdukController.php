@@ -30,7 +30,7 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        $data = ["categories"=>Category::all()];
+        $data = ["categories" => Category::all()];
         return view('produk.create', $data);
     }
 
@@ -47,10 +47,10 @@ class ProdukController extends Controller
             $validated['gambar'] = null;
         }
 
-     $validated['is_tabungan'] = $request->has('is_tabungan') ? 1 : 0;
+        $validated['is_tabungan'] = $request->has('is_tabungan') ? 1 : 0;
         // Set is_mebel menjadi 1 jika ada di request, jika tidak, set ke 0
-    $validated['is_meubel'] = $request->has('is_meubel') ? 1 : 0;
-    
+        $validated['is_meubel'] = $request->has('is_meubel') ? 1 : 0;
+
 
         Produk::create($validated);
         return to_route('produk.index')->with('success', 'Berhasil menambahkan produk.');
@@ -69,7 +69,7 @@ class ProdukController extends Controller
      */
     public function edit(Produk $produk)
     {
-        $data = ["categories"=>Category::all(), 'produk' => $produk];
+        $data = ["categories" => Category::all(), 'produk' => $produk];
         return view('produk.edit', $data);
     }
 
@@ -90,13 +90,13 @@ class ProdukController extends Controller
 
         $validated['is_tabungan'] = $request->input('is_tabungan', 0);
 
-          // Set is_mebel menjadi 1 jika ada di request, jika tidak, set ke 0
-     $validated['is_meubel'] = $request->input('is_meubel', 0);
+        // Set is_mebel menjadi 1 jika ada di request, jika tidak, set ke 0
+        $validated['is_meubel'] = $request->input('is_meubel', 0);
 
 
         $produk->update($validated);
 
-          return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui');
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui');
     }
 
     /**
@@ -104,10 +104,14 @@ class ProdukController extends Controller
      */
     public function destroy(Produk $produk)
     {
-        if (FacadesStorage::exists($produk->gambar)) {
-            FacadesStorage::delete($produk->gambar);
+        try {
+            if (FacadesStorage::exists($produk->gambar)) {
+                FacadesStorage::delete($produk->gambar);
+            }
+            $produk->delete();
+            return to_route('produk.index')->with('success', 'Produk berhasil dihapus.');
+        } catch (\Exception $e) {
+            return to_route('produk.index')->with('error', 'Produk masih digunakan');
         }
-        $produk->delete();
-        return to_route('produk.index')->with('success', 'Produk berhasil dihapus.');
     }
 }
