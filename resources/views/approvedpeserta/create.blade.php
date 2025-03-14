@@ -164,6 +164,7 @@
       items.forEach(function(item) {
         total += item.total;
       });
+      totalPrice = total;
 
       $('#totalPrice').html(formatCurrency(total))
     }
