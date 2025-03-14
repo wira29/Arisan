@@ -137,7 +137,11 @@
     }
 
     function setTotalPrice() {
-      $('#totalPrice').html(formatCurrency(totalPrice))
+      let total = 0;
+      items.forEach(function(item) {
+        total += item.total;
+      });
+      $('#totalPrice').html(formatCurrency(total))
     }
 
     function setPerMinggu() {
@@ -166,8 +170,8 @@
         item.qty++;
         item.total = item.qty * produk.harga_jual;
 
-        let qtyHtml = $(document).find('#row-' + item.id).find('td:nth-child(2)').find('strong');
-        qtyHtml.html(item.qty);
+        let qtyHtml = $(document).find('#row-' + item.id).find('td:nth-child(2)').find('input');
+        qtyHtml.val(item.qty);
         let totalHtml = $(document).find('#row-' + item.id).find('td:nth-child(3)');
         totalHtml.html(formatCurrency(item.total));
       } else {
@@ -192,10 +196,12 @@
                       <p class="text-secondary">${formatCurrency(item.produk.harga_jual)}</p>
                     </div>
                   </td>
-                  <td >
-                    <i class="fas fa-minus minus-item text-danger" data-id="${item.id}"></i>
-                    <strong class="mx-2">${item.qty}</strong>
-                    <i class="fas fa-plus add-item text-success" data-id="${item.id}"></i>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="fas fa-minus minus-item text-danger" data-id="${item.id}"></i>
+                      <input name="qty-item" type="text" class="mx-2 form-control" style="width: 100px" value="${item.qty}" data-id="${item.id}" />
+                      <i class="fas fa-plus add-item text-success" data-id="${item.id}"></i>
+                    </div>
                   </td>
                   <td>
                   ${formatCurrency(item.total)}
@@ -210,33 +216,59 @@
       }
 
       // menambahkan total price 
-      totalPrice += item.produk.harga_jual;
+      // totalPrice += item.produk.harga_jual;
       setTotalPrice()
       setPerMinggu()
     });
 
     $(document).on('click', '.add-item', function() {
       const itemId = $(this).data('id');
-      const qty = parseInt($(this).siblings('strong').text()) + 1;
+      const qty = parseInt($(this).siblings('input').val()) + 1;
       let item = items.find(item => item.id == itemId);
       item.qty = qty;
       item.total = qty * item.produk.harga_jual;
 
       // rubah Qty tampilan
-      $(this).siblings('strong').text(qty);
+      $(this).siblings('input').val(qty);
 
       // menambahkan price 
-      $(this).parent().parent().find('td:nth-child(3)').html(formatCurrency(item.total));
+      $(this).parent().parent().parent().find('td:nth-child(3)').html(formatCurrency(item.total));
       
       // menambahkan total price 
-      totalPrice += item.produk.harga_jual;
+      // totalPrice += item.produk.harga_jual;
+      setTotalPrice()
+      setPerMinggu()
+    });
+
+    $(document).on('change', 'input[name="qty-item"]', function() {
+      const itemId = $(this).data('id');
+      let qty = parseInt($(this).val());
+
+      if (qty < 1) {
+        $(this).val(1);
+        qty = 1;
+        // return;
+      }
+
+      let item = items.find(item => item.id == itemId);
+      item.qty = qty;
+      item.total = qty * item.produk.harga_jual;
+
+      // rubah Qty tampilan
+      $(this).val(qty);
+
+      // mengurangi price 
+      $(this).parent().parent().parent().find('td:nth-child(3)').html(formatCurrency(item.total));
+      
+      // menambahkan total price 
+      // totalPrice += item.produk.harga_jual;
       setTotalPrice()
       setPerMinggu()
     });
 
     $(document).on('click', '.minus-item', function() {
       const itemId = $(this).data('id');
-      const qty = parseInt($(this).siblings('strong').text()) - 1;
+      const qty = parseInt($(this).siblings('input').val()) - 1;
       let item = items.find(item => item.id == itemId);
       
       if (qty <= 0) {
@@ -248,13 +280,13 @@
       item.total = qty * item.produk.harga_jual;
 
       // rubah Qty tampilan
-      $(this).siblings('strong').text(qty);
+      $(this).siblings('input').val(qty);
 
       // mengurangi price 
-      $(this).parent().parent().find('td:nth-child(3)').html(formatCurrency(item.total));
+      $(this).parent().parent().parent().find('td:nth-child(3)').html(formatCurrency(item.total));
       
       // menambahkan total price 
-      totalPrice -= item.produk.harga_jual;
+      // totalPrice -= item.produk.harga_jual;
       setTotalPrice()
       setPerMinggu()
     });
@@ -275,13 +307,13 @@
         setJumlahBayar();
       }
 
-      totalPrice -= items.find(item => item.id == itemId).total;
-      setTotalPrice()
-      setPerMinggu()
-
+      
       $(document).find('#row-' + itemId).remove();
       items = items.filter(item => item.id !== itemId);
       
+      // totalPrice -= items.find(item => item.id == itemId).total;
+      setTotalPrice()
+      setPerMinggu()
       if (items.length === 0) {
         $('#empty-order').show();
       }
