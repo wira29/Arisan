@@ -81,15 +81,21 @@
                 <td><strong>ALAMAT:</strong></td>
                 <td colspan="2">{{ $peserta->user->address ?? '-' }}</td>
             </tr>
-            <tr>
-                <td><strong>ARISAN:</strong></td>
-                <td colspan="2">Rp {{ number_format($peserta->arisanUserProduks->sum('total_price'), 0, ',', '.') }}</td>
-            </tr>
             @php
-            $tabungan = App\Models\ArisanUserProduk::whereRelation('produk', function($q) {
-            return $q->where('is_tabungan', true);
+            // Menghitung total harga dari seluruh produk yang dimiliki peserta
+            $total_price = $peserta->arisanUserProduks->sum('total_price');
+            
+            // Menghitung total tabungan berdasarkan produk dengan is_tabungan = true
+            $tabungan = App\Models\ArisanUserProduk::whereHas('produk', function ($q) {
+            $q->where('is_tabungan', true);
             })->where('arisan_user_id', $peserta->id)->sum('total_price');
             @endphp
+            
+            <tr>
+                <td><strong>ARISAN:</strong></td>
+                <td colspan="2">Rp {{ number_format($total_price - $tabungan, 0, ',', '.') }}</td>
+            </tr>
+          
             <tr>
                 <td><strong>TABUNGAN:</strong></td>
                 <td colspan="2">Rp {{ number_format($tabungan ?? 0, 0, ',', '.') }}</td>
