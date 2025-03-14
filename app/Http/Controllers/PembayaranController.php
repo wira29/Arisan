@@ -32,12 +32,14 @@ class PembayaranController extends Controller
     {
         try {
             $result = DB::transaction(function () use ($request) {
-                Pembayaran::create([
-                    'arisan_user_id' => $request->arisan_user_id,
-                    'pembayaran_ke' => $request->pembayaran_ke,
-                    'jumlah' => $request->jumlah,
-                    'metode' => $request->metode,
-                ]);
+                foreach ($request->pembayaran_ke as $ke) {
+                    Pembayaran::create([
+                        'arisan_user_id' => $request->arisan_user_id,
+                        'pembayaran_ke' => $ke,
+                        'jumlah' => $request->jumlah,
+                        'metode' => $request->metode,
+                    ]);
+                }
 
                 return [
                     'success' => true,

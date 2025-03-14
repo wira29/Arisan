@@ -65,11 +65,13 @@
 
     <div class="card mt-3">
         <div class="card-body">
-            <div class="col-md-12 table-responsive">
+            <div class="col-md-12 table-responsive text-end">
+                <button class="btn btn-primary" id="btn-bayar-sekaligus" disabled>Bayar Sekaligus</button>
                 <table class="table" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Pembayaran-Ke</th>
+                            <th style="width: 5px;">#</th>
+                            <th class="text-start">Pembayaran-Ke</th>
                             <th>Tanggal</th>
                             <th>Jumlah</th>
                             <th>Metode</th>
@@ -79,7 +81,7 @@
                     <tbody id="pembayaran-table">
                         
                        <tr>
-                        <td class="text-center" colspan="5">-- Tidak ada data --</td>
+                        <td class="text-center" colspan="6">-- Tidak ada data --</td>
                        </tr>
                     </tbody>
                 </table>
@@ -115,6 +117,11 @@ aria-hidden="true"
     </div>
     <div class="modal-body">
         <div class="form-group">
+
+            <label for="">Pembayaran Terpilih</label>
+            <ul id="pembayaran-terpilih">
+
+            </ul>
             <label class="mr-sm-2 mb-2" for="inlineFormCustomSelect">Metode Pembayaran</label>
             <select class="form-select mr-sm-2" id="metode-pembayaran">
               <option value="Cash">Cash</option>
@@ -160,6 +167,7 @@ aria-hidden="true"
 
         let currentKe = 0;
         let currentUser = null;
+        let selectedWeek = [];
 
         // For select 2
         //***********************************//
@@ -173,9 +181,47 @@ aria-hidden="true"
             init();
         });
 
+        $('input[name="pembayaran-check-all"]').on('change', function() {
+            $('input[name="pembayaran"]').prop('checked', $(this).prop('checked'));
+        });
+
+        function setPembayarnCheckAllBtn() {
+            if (selectedWeek.length == 0) {
+                $('#btn-bayar-sekaligus').prop('disabled', true);
+            } else {
+                $('#btn-bayar-sekaligus').prop('disabled', false);
+            }
+        }
+
+        $(document).on('change', 'input[name="pembayaran"]', function() {
+            const ke = $(this).data('ke');
+            const selected = $(this).prop('checked');
+
+            if (selected) {
+                selectedWeek.push(ke);
+            } else {
+                selectedWeek = selectedWeek.filter(function(item) {
+                    return item != ke;
+                });
+            }
+
+            setPembayarnCheckAllBtn();
+        });
+
+        $('#modal-bayar').on('shown.bs.modal', function() {
+            let li = ''
+            selectedWeek.forEach(function(ke) {
+                li += `<li>minggu-${ke}</li>`
+            });
+
+            $('#pembayaran-terpilih').html(li);
+
+        });
+
         function init() {
             let tbody = '';
             const user = JSON.parse($("#peserta").val());
+            currentUser = user
             console.log(user)
 
             $.ajax({
@@ -189,7 +235,10 @@ aria-hidden="true"
                     for (let i = 0; i < user.jumlah_bayar; i++) {
                         const is_paid = data.paid.includes(i + 1);
                         tbody += `<tr>
-                                    <td>${is_paid ? `<s>minggu-${i + 1}</s>` : `minggu-${i + 1}`}</td>
+                                    <td style="width: 5px;">
+                                        ${is_paid ? '' : `<input type="checkbox" class="form-check-input" name="pembayaran" data-ke="${i + 1}"/>` }
+                                    </td>
+                                    <td class="text-start">${is_paid ? `<s>minggu-${i + 1}</s>` : `minggu-${i + 1}`}</td>
                                     <td>${is_paid ? formatDate(data.pembayaran[i].created_at) : '-'}</td>
                                     <td>${is_paid ? formatCurrency(data.pembayaran[i].jumlah) : 'Rp. 0'}</td>
                                     <td>${is_paid ? data.pembayaran[i].metode : '-'}</td>
@@ -216,12 +265,25 @@ aria-hidden="true"
             });
         }
 
+        $(document).on('click', '#btn-bayar-sekaligus', function(e) {
+            e.preventDefault();
+
+            $('#modal-bayar').modal('show');
+        });
+
         $(document).on('click', '.btn-bayar', function(e) {
             e.preventDefault();
             const user = $(this).data('user')
             const ke = $(this).data('ke')
             currentKe = ke
             currentUser = user
+
+            selectedWeek = []
+            $('input[name="pembayaran"]').prop('checked', false)
+            setPembayarnCheckAllBtn()
+
+            selectedWeek.push(ke)
+
             $('#modal-bayar').modal('show');
             $('#modal-bayar').find('form').attr('data-user', JSON.stringify(user)).attr('data-ke', ke)
         });
@@ -238,7 +300,7 @@ aria-hidden="true"
                 data: {
                     _token: '{{ csrf_token() }}',
                     arisan_user_id: currentUser.id,
-                    pembayaran_ke: currentKe,
+                    pembayaran_ke: selectedWeek,
                     jumlah: currentUser.per_minggu,
                     metode: metodePembayaran
                 },
