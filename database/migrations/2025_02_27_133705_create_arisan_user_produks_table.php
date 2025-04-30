@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('arisan_user_id')->constrained();
             $table->foreignId('produks_id')->constrained();
             $table->integer('qty');
+            $table->integer('qty_sudah_dikirim');
             $table->integer('price');
             $table->integer('total_price');
             $table->timestamps();

@@ -14,10 +14,17 @@ return new class extends Migration
         Schema::create('arisan_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->boolean('is_mabel');
-            $table->boolean('is_approved');
-            $table->integer('tabungan');
-            $table->integer('total_price');
+            $table->boolean('is_approved')->default(false);
+            $table->boolean('is_finished')->default(false);
+            $table->boolean('is_tabungan_diambil')->default(false);
+            $table->enum('status', ['individu', 'grup'])->default('individu');
+            $table->integer('tabungan')->default(0);
+            $table->integer('total_arisan')->default(0);
+            $table->integer('total_akhir')->default(0);
+            $table->integer('jumlah_bayar')->default(45);
+            $table->integer('bayar_per_minggu')->default(0);
+            $table->integer('sudah_bayar')->default(0);
+            $table->string('kode')->nullable();
             $table->timestamps();
         });
     }

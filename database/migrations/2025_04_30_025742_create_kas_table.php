@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('arisan_users', function (Blueprint $table) {
-            $table->integer('jumlah_bayar')->default(0)->after('total_price');
-            $table->integer('per_minggu')->default(0)->after('jumlah_bayar');
+        Schema::create('kas', function (Blueprint $table) {
+            $table->id();
+            $table->integer('jumlah');
+            $table->enum('status', ['pemasukan', 'pengeluaran']);
+            $table->foreignId('created_by')->constrained('users');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('arisan_users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('kas');
     }
 };

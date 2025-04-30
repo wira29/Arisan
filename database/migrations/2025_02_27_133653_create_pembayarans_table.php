@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('arisan_user_id')->constrained();
-            $table->integer("pembayaran_ke");
+            $table->integer("pembayaran_ke")->nullable();
             $table->integer("jumlah");
             $table->enum("metode", ["Cash", "Transfer", "E-Wallet", "QRIS"]);
             $table->timestamps();

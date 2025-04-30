@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('deskripsi');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
+            $table->enum('status', ['buka', 'selesai']);
             $table->timestamps();
         });
     }
